@@ -16,20 +16,33 @@ namespace BoardGameDB.Models
         public string Location { get; set; } = string.Empty;
 
         public Complexity? Complexity { get; set; }
+
+        [Display(Name = "Play Time (Min)")]
         public int MinimumPlayTimeMinutes { get; set; }
+
+        [Display(Name = "Play Time (Max)")]
         public int MaximumPlayTimeMinutes { get; set; }
+
+
+        [Display(Name = "Player Count (Min)")]
         public int MinimumPlayerCount { get; set; }
+
+        [Display(Name = "Player Count (Max)")]
         public int MaximumPlayerCount { get; set; }
 
+        [Display(Name = "Picture URL")]
         [DataType(DataType.Url)]
         public string? PictureUrl { get; set; }
 
+        [Display(Name = "Rules URL")]
         [DataType(DataType.Url)]
         public string? RulesUrl { get; set; }
 
+        [Display(Name = "Rules Video URL")]
         [DataType(DataType.Url)]
         public string? RulesVideoUrl { get; set; }
 
+        [Display(Name = "BGG URL")]
         [DataType(DataType.Url)]
         public string? BoardGameGeekUrl { get; set; }        
 

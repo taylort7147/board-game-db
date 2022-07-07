@@ -17,5 +17,8 @@ namespace BoardGameDB.Data
         public DbSet<BoardGameDB.Models.GameType> GameType { get; set; } = null!;
         public DbSet<BoardGameDB.Models.Mechanic> Mechanic { get; set; } = null!;
         public DbSet<BoardGameDB.Models.PlayStyle> PlayStyle { get; set; } = null!;
+        public DbSet<BoardGameDB.Models.GameGameType> GameGameType { get; set; } = null!;
+        public DbSet<BoardGameDB.Models.GameMechanic> GameMechanic { get; set; } = null!;
+        public DbSet<BoardGameDB.Models.GamePlayStyle> GamePlayStyle { get; set; } = null!;
     }
 }

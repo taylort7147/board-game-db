@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BoardGameDB.Models
 {
@@ -30,10 +31,22 @@ namespace BoardGameDB.Models
         public string? RulesVideoUrl { get; set; }
 
         [DataType(DataType.Url)]
-        public string? BoardGameGeekUrl { get; set; }
+        public string? BoardGameGeekUrl { get; set; }        
 
-        
+        [NotMapped]
+        public string? ComplexityString { 
+            get
+            {
+                return Complexity == null ? "" : Complexity.Value.ToDisplayString()!;
+            } 
+            set
+            {
+                Complexity = ComplexityExtensions.From(value);
+            } 
+        }        
+
         public ICollection<Mechanic>? Mechanics { get; set; }
         public ICollection<GameType>? GameTypes { get; set; }
+        public ICollection<PlayStyle>? PlayStyles { get; set; }
     }
 }

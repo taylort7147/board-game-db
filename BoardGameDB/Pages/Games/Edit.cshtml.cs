@@ -18,10 +18,20 @@ namespace BoardGameDB.Pages_Games
         public EditModel(BoardGameDB.Data.BoardGameDBContext context)
         {
             _context = context;
+            
+            var complexityList = new List<SelectListItem>{ new SelectListItem{ Text = null, Value = null}};
+            complexityList.AddRange(
+                Enum.GetValues(typeof(Complexity))
+                    .Cast<Complexity>()
+                    .Select(c => new SelectListItem{ Text=c.ToDisplayString(), Value=c.ToDisplayString()})
+            );
+            ComplexityListItems = complexityList.AsEnumerable();
         }
 
         [BindProperty]
         public Game Game { get; set; } = default!;
+
+        public IEnumerable<SelectListItem> ComplexityListItems { get; set;}
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

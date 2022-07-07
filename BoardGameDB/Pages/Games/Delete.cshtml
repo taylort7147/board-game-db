@@ -31,28 +31,37 @@
             @Html.DisplayFor(model => model.Game.Complexity)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Game.MinimumPlayTimeMinutes)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Game.MinimumPlayTimeMinutes)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Game.MaximumPlayTimeMinutes)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Game.MaximumPlayTimeMinutes)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Game.MinimumPlayerCount)
+            Players
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Game.MinimumPlayerCount)
+            @if(Model.Game.MinimumPlayerCount != Model.Game.MaximumPlayerCount)
+            {
+                <span>-</span>
+                @Html.DisplayFor(model => model.Game.MaximumPlayerCount)
+            }
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Game.MaximumPlayerCount)
+            Play Time
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Game.MaximumPlayerCount)
+            @Html.DisplayFor(model => model.Game.MinimumPlayTimeMinutes)
+            @if(Model.Game.MinimumPlayTimeMinutes == Model.Game.MaximumPlayTimeMinutes)
+            {
+            }
+            else
+            {
+                <span>-</span>
+                @Html.DisplayFor(modelItem => Model.Game.MaximumPlayTimeMinutes)
+            }            
+            @if(Model.Game.MinimumPlayTimeMinutes == 1)
+            {
+                <span>Minute</span>
+            }
+            else
+            {
+                <span>Minutes</span>
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Game.PictureUrl)

@@ -23,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.Game[0].Complexity)
             </th>
             <th>
-                Player Count
+                Players
             </th>
             <th>
                 Play Time
@@ -46,15 +46,10 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MinimumPlayerCount)
-                @if(item.MinimumPlayerCount == item.MaximumPlayerCount)
-                {
-                    <span>Player</span>
-                }
-                else
+                @if(item.MinimumPlayerCount != item.MaximumPlayerCount)
                 {
                     <span>-</span>
                     @Html.DisplayFor(modelItem => item.MaximumPlayerCount)
-                    <span>Players</span>
                 }
             </td>
             <td>

@@ -17,7 +17,17 @@ namespace BoardGameDB.Pages_Games
         public CreateModel(BoardGameDB.Data.BoardGameDBContext context)
         {
             _context = context;
+            
+            var complexityList = new List<SelectListItem>{ new SelectListItem{ Text = null, Value = null}};
+            complexityList.AddRange(
+                Enum.GetValues(typeof(Complexity))
+                    .Cast<Complexity>()
+                    .Select(c => new SelectListItem{ Text=c.ToDisplayString(), Value=c.ToDisplayString()})
+            );
+            ComplexityListItems = complexityList.AsEnumerable();
         }
+
+        public IEnumerable<SelectListItem> ComplexityListItems { get; set;}
 
         public IActionResult OnGet()
         {

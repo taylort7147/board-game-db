@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using BoardGameDB.Models;
 
 namespace BoardGameDB.Data
 {
@@ -13,12 +14,26 @@ namespace BoardGameDB.Data
         {
         }
 
-        public DbSet<BoardGameDB.Models.Game> Game { get; set; } = null!;
-        public DbSet<BoardGameDB.Models.GameType> GameType { get; set; } = null!;
-        public DbSet<BoardGameDB.Models.Mechanic> Mechanic { get; set; } = null!;
-        public DbSet<BoardGameDB.Models.PlayStyle> PlayStyle { get; set; } = null!;
-        public DbSet<BoardGameDB.Models.GameGameType> GameGameType { get; set; } = null!;
-        public DbSet<BoardGameDB.Models.GameMechanic> GameMechanic { get; set; } = null!;
-        public DbSet<BoardGameDB.Models.GamePlayStyle> GamePlayStyle { get; set; } = null!;
+        public DbSet<Game> Game { get; set; } = null!;
+        public DbSet<GameType> GameType { get; set; } = null!;
+        public DbSet<Mechanic> Mechanic { get; set; } = null!;
+        public DbSet<PlayStyle> PlayStyle { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Game>()
+                .HasMany(g => g.Mechanics)
+                .WithMany(m => m.Games);
+            
+            builder.Entity<Game>()
+                .HasMany(g => g.GameTypes)
+                .WithMany(gt => gt.Games);
+
+            builder.Entity<Game>()
+                .HasMany(g => g.PlayStyles)
+                .WithMany(ps => ps.Games);
+
+            base.OnModelCreating(builder);
+        }
     }
 }

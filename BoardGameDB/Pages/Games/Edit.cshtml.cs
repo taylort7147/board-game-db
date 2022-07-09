@@ -31,7 +31,9 @@ namespace BoardGameDB.Pages_Games
         [BindProperty]
         public Game Game { get; set; } = default!;
 
-        public IEnumerable<SelectListItem> ComplexityListItems { get; set;}
+        public IEnumerable<SelectListItem> ComplexityListItems { get; set; }
+        public IEnumerable<SelectListItem> MechanicsListItems { get; set; } = default!;
+
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -40,12 +42,26 @@ namespace BoardGameDB.Pages_Games
                 return NotFound();
             }
 
-            var game =  await _context.Game.FirstOrDefaultAsync(m => m.Id == id);
+            var game =  await _context.Game
+                .Include(g => g.Mechanics)
+                .Include(g => g.GameTypes)
+                .Include(g => g.PlayStyles)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (game == null)
             {
                 return NotFound();
             }
             Game = game;
+
+            var allMechanicsList = new List<SelectListItem>{ new SelectListItem { Text = "", Value = "" } };
+            allMechanicsList.AddRange(
+                await _context.Mechanic
+                    .Select(m => 
+                        new SelectListItem{ Text = m.Name, Value = m.Id.ToString() })
+                    .ToListAsync()
+            );
+            MechanicsListItems = allMechanicsList;
+            
             return Page();
         }
 
@@ -83,5 +99,5 @@ namespace BoardGameDB.Pages_Games
         {
           return (_context.Game?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-    }
+    }   
 }

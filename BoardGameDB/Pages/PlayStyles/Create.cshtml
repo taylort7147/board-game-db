@@ -19,6 +19,11 @@
                 <span asp-validation-for="PlayStyle.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="PlayStyle.Games" class="control-label"></label>
+                <input hidden asp-for="PlayStyle.Games" />
+                <span asp-validation-for="PlayStyle.Games" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

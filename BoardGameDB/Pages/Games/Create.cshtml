@@ -69,6 +69,21 @@
                 <span asp-validation-for="Game.BoardGameGeekUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Game.Mechanics" class="control-label"></label>
+                <input hidden asp-for="Game.Mechanics" />
+                <span asp-validation-for="Game.Mechanics" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Game.PlayStyles" class="control-label"></label>
+                <input hidden asp-for="Game.PlayStyles" />
+                <span asp-validation-for="Game.PlayStyles" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Game.GameTypes" class="control-label"></label>
+                <input hidden asp-for="Game.GameTypes" />
+                <span asp-validation-for="Game.GameTypes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

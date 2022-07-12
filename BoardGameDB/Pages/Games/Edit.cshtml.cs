@@ -32,7 +32,11 @@ namespace BoardGameDB.Pages_Games
         public Game Game { get; set; } = default!;
 
         public IEnumerable<SelectListItem> ComplexityListItems { get; set; }
-        public IEnumerable<SelectListItem> MechanicsListItems { get; set; } = default!;
+
+        public IEnumerable<SelectListItem> NewMechanicSelectList { get; set; } = default!;
+
+        [BindProperty]
+        public string? NewMechanicIdString { get; set; } = default!;
 
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -56,12 +60,12 @@ namespace BoardGameDB.Pages_Games
             var allMechanicsList = new List<SelectListItem>{ new SelectListItem { Text = "", Value = "" } };
             allMechanicsList.AddRange(
                 await _context.Mechanic
+                    .Where(m => !game.Mechanics.Contains(m))
                     .Select(m => 
                         new SelectListItem{ Text = m.Name, Value = m.Id.ToString() })
                     .ToListAsync()
-            );
-            MechanicsListItems = allMechanicsList;
-            
+            );        
+            NewMechanicSelectList = allMechanicsList;            
             return Page();
         }
 
@@ -93,6 +97,71 @@ namespace BoardGameDB.Pages_Games
             }
 
             return RedirectToPage("./Index");
+        }
+
+        public async Task<IActionResult> OnPostRemoveMechanicAsync(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var game = await _context.Game
+                .Where(g => g.Id == Game.Id)
+                .Include(g => g.Mechanics)
+                .FirstAsync();
+            
+            if(game == null)
+            {
+                return Page();
+            }
+
+            var mechanic = game.Mechanics.Find(m => m.Id == id);
+            if(mechanic == null)
+            {
+                return Page();
+            }
+
+            game.Mechanics.Remove(mechanic);
+            _context.Update(game);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToPage("./Edit", new { id = Game.Id });
+        }
+
+        public async Task<IActionResult> OnPostAddMechanicAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            if(NewMechanicIdString == null)
+            {
+                return Page();
+            }
+
+            var game = await _context.Game
+                .Where(g => g.Id == Game.Id)
+                .Include(g => g.Mechanics)
+                .FirstAsync();
+            
+            if(game == null)
+            {
+                return Page();
+            }
+
+            var mechanicId = int.Parse(NewMechanicIdString);
+            var mechanic = _context.Mechanic.Find(mechanicId);
+            if(mechanic == null)
+            {
+                return Page();
+            }
+            game.Mechanics.Add(mechanic);
+            _context.Update(game);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToPage("./Edit", new { id = Game.Id });
         }
 
         private bool GameExists(int id)

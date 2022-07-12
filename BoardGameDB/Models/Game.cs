@@ -58,8 +58,8 @@ namespace BoardGameDB.Models
             } 
         }        
 
-        public ICollection<Mechanic> Mechanics { get; set; } = default!;
-        public ICollection<GameType> GameTypes { get; set; } = default!;
-        public ICollection<PlayStyle> PlayStyles { get; set; } = default!;
+        public List<Mechanic> Mechanics { get; set; } = default!;
+        public List<GameType> GameTypes { get; set; } = default!;
+        public List<PlayStyle> PlayStyles { get; set; } = default!;
     }
 }

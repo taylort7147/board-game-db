@@ -69,28 +69,23 @@
                 <input asp-for="Game.BoardGameGeekUrl" class="form-control" />
                 <span asp-validation-for="Game.BoardGameGeekUrl" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <div>
                     @Html.LabelFor(m => m.Game.Mechanics)
                     @Html.HiddenFor(m => m.Game.Mechanics)
-                <ul>    
-                    @for(var mechanicIndex = 0; mechanicIndex< Model.Game.Mechanics.Count; ++mechanicIndex)
-                    {
-                    <li>
-                        <div class="form-group">
-                            @Html.HiddenFor(m => m.Game.Mechanics[mechanicIndex])                        
-                            <span>@Html.ValueFor(m => m.Game.Mechanics[mechanicIndex].Name)</span>
-                            <input type="submit" role="button" class="btn btn-close" value=""
-                                asp-page-handler="RemoveMechanic" 
-                                asp-route-id="@Html.ValueFor(m => m.Game.Mechanics[mechanicIndex].Id)" />
-                        </div>
-                    </li>
-                    }
-                    <li>
-                        <div class="form-group">
-                            <select class="form-control" asp-for="NewMechanicIdString" asp-items="Model.NewMechanicSelectList"></select>
-                            <input asp-page-handler="AddMechanic" type="submit" role="button" class="btn btn-secondary" value="Add" />
-                        </div>
-                    </li>
-                </ul>
+                </div>
+                <div>
+                @for(var mechanicIndex = 0; mechanicIndex < Model.MechanicsCheckboxes.Count(); ++mechanicIndex)
+                {
+                    <div>
+                        @Html.HiddenFor(m => m.MechanicsCheckboxes[mechanicIndex].Id)
+                        @Html.HiddenFor(m => m.MechanicsCheckboxes[mechanicIndex].DisplayName)
+                        <input type="checkbox" asp-for="@Model.MechanicsCheckboxes[mechanicIndex].IsChecked"  />
+                        <label>@Model.MechanicsCheckboxes[mechanicIndex].DisplayName</label>     
+                    </div>
+                }
+                </div>
+            </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.Game.PlayStyles)
                 @Html.HiddenFor(m => m.Game.PlayStyles)

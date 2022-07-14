@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +16,13 @@ namespace BoardGameDB.Pages_Games
 {
     public class EditModel : PageModel
     {
+        public class IdCheckbox
+        {
+            public int Id { get; set; }
+            public string DisplayName { get; set; } = default!;
+            public bool IsChecked { get; set; }
+        }
+
         private readonly BoardGameDB.Data.BoardGameDBContext _context;
 
         public EditModel(BoardGameDB.Data.BoardGameDBContext context)
@@ -33,10 +43,8 @@ namespace BoardGameDB.Pages_Games
 
         public IEnumerable<SelectListItem> ComplexityListItems { get; set; }
 
-        public IEnumerable<SelectListItem> NewMechanicSelectList { get; set; } = default!;
-
         [BindProperty]
-        public string? NewMechanicIdString { get; set; } = default!;
+        public List<IdCheckbox> MechanicsCheckboxes { get; set; }
 
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -57,15 +65,15 @@ namespace BoardGameDB.Pages_Games
             }
             Game = game;
 
-            var allMechanicsList = new List<SelectListItem>{ new SelectListItem { Text = "", Value = "" } };
-            allMechanicsList.AddRange(
-                await _context.Mechanic
-                    .Where(m => !game.Mechanics.Contains(m))
-                    .Select(m => 
-                        new SelectListItem{ Text = m.Name, Value = m.Id.ToString() })
-                    .ToListAsync()
-            );        
-            NewMechanicSelectList = allMechanicsList;            
+            var gameMechanics = Game.Mechanics.ToList();
+            MechanicsCheckboxes = await _context.Mechanic
+                .Select(m => new IdCheckbox{
+                    Id = m.Id,
+                    IsChecked = gameMechanics.Contains(m),
+                    DisplayName = m.Name
+                }).ToListAsync();
+
+
             return Page();
         }
 
@@ -79,6 +87,8 @@ namespace BoardGameDB.Pages_Games
             }
 
             _context.Attach(Game).State = EntityState.Modified;
+
+            UpdateMechanics();
 
             try
             {
@@ -99,74 +109,44 @@ namespace BoardGameDB.Pages_Games
             return RedirectToPage("./Index");
         }
 
-        public async Task<IActionResult> OnPostRemoveMechanicAsync(int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            var game = await _context.Game
-                .Where(g => g.Id == Game.Id)
-                .Include(g => g.Mechanics)
-                .FirstAsync();
-            
-            if(game == null)
-            {
-                return Page();
-            }
-
-            var mechanic = game.Mechanics.Find(m => m.Id == id);
-            if(mechanic == null)
-            {
-                return Page();
-            }
-
-            game.Mechanics.Remove(mechanic);
-            _context.Update(game);
-            await _context.SaveChangesAsync();
-            
-            return RedirectToPage("./Edit", new { id = Game.Id });
-        }
-
-        public async Task<IActionResult> OnPostAddMechanicAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            if(NewMechanicIdString == null)
-            {
-                return Page();
-            }
-
-            var game = await _context.Game
-                .Where(g => g.Id == Game.Id)
-                .Include(g => g.Mechanics)
-                .FirstAsync();
-            
-            if(game == null)
-            {
-                return Page();
-            }
-
-            var mechanicId = int.Parse(NewMechanicIdString);
-            var mechanic = _context.Mechanic.Find(mechanicId);
-            if(mechanic == null)
-            {
-                return Page();
-            }
-            game.Mechanics.Add(mechanic);
-            _context.Update(game);
-            await _context.SaveChangesAsync();
-            
-            return RedirectToPage("./Edit", new { id = Game.Id });
-        }
-
         private bool GameExists(int id)
         {
           return (_context.Game?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private async void UpdateMechanics()
+        {
+            var game = await _context.Game.Where(g => g.Id == Game.Id).Include(g => g.Mechanics).FirstAsync();
+            Game.Mechanics = game.Mechanics;
+
+            var existingMechanics = game.Mechanics;
+            var allMechanics = await _context.Mechanic.ToListAsync();
+            var mechanicsToRemove = new List<Mechanic>();
+
+            foreach(var checkbox in MechanicsCheckboxes)
+            {
+                var mechanicId = checkbox.Id;
+                var mechanic = allMechanics.Find(m => m.Id == mechanicId);
+
+                if(mechanic != null)
+                {
+                    if(checkbox.IsChecked == false && existingMechanics.Contains(mechanic))
+                    {
+                        // Remove
+                        mechanicsToRemove.Add(mechanic);
+                    }
+                    else if(checkbox.IsChecked == true && !existingMechanics.Contains(mechanic))
+                    {
+                        // Add
+                        Game.Mechanics.Add(mechanic);
+                    }
+                }
+            }  
+            foreach(var mechanic in mechanicsToRemove)
+            {
+                Game.Mechanics.Remove(mechanic);
+            }
+            _context.Update(Game);
         }
     }   
 }

@@ -59,7 +59,9 @@ namespace BoardGameDB.Models
         }        
 
         public List<Mechanic> Mechanics { get; set; } = default!;
+        [Display(Name = " Game Types")]
         public List<GameType> GameTypes { get; set; } = default!;
+        [Display(Name = " Play Styles")]
         public List<PlayStyle> PlayStyles { get; set; } = default!;
     }
 }

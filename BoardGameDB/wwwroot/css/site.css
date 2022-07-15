@@ -16,3 +16,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.form-group {
+  margin: 1rem auto;
+}
+
+.checkbox-group {
+  margin-left: 1rem;
+}

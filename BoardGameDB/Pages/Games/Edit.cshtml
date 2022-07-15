@@ -74,7 +74,7 @@
                     @Html.LabelFor(m => m.Game.Mechanics)
                     @Html.HiddenFor(m => m.Game.Mechanics)
                 </div>
-                <div>
+                <div class=checkbox-group>
                 @for(var index = 0; index < Model.MechanicCheckboxes.Count(); ++index)
                 {
                     <div>
@@ -91,7 +91,7 @@
                     @Html.LabelFor(m => m.Game.GameTypes)
                     @Html.HiddenFor(m => m.Game.GameTypes)
                 </div>
-                <div>
+                <div class=checkbox-group>
                 @for(var index = 0; index < Model.GameTypeCheckboxes.Count(); ++index)
                 {
                     <div>
@@ -108,7 +108,7 @@
                     @Html.LabelFor(m => m.Game.PlayStyles)
                     @Html.HiddenFor(m => m.Game.PlayStyles)
                 </div>
-                <div>
+                <div class=checkbox-group>
                 @for(var index = 0; index < Model.PlayStyleCheckboxes.Count(); ++index)
                 {
                     <div>

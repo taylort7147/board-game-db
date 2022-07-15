@@ -75,45 +75,52 @@
                     @Html.HiddenFor(m => m.Game.Mechanics)
                 </div>
                 <div>
-                @for(var mechanicIndex = 0; mechanicIndex < Model.MechanicsCheckboxes.Count(); ++mechanicIndex)
+                @for(var index = 0; index < Model.MechanicCheckboxes.Count(); ++index)
                 {
                     <div>
-                        @Html.HiddenFor(m => m.MechanicsCheckboxes[mechanicIndex].Id)
-                        @Html.HiddenFor(m => m.MechanicsCheckboxes[mechanicIndex].DisplayName)
-                        <input type="checkbox" asp-for="@Model.MechanicsCheckboxes[mechanicIndex].IsChecked"  />
-                        <label>@Model.MechanicsCheckboxes[mechanicIndex].DisplayName</label>     
+                        @Html.HiddenFor(m => m.MechanicCheckboxes[index].Id)
+                        @Html.HiddenFor(m => m.MechanicCheckboxes[index].DisplayName)
+                        <input type="checkbox" asp-for="@Model.MechanicCheckboxes[index].IsChecked"  />
+                        <label>@Model.MechanicCheckboxes[index].DisplayName</label>     
                     </div>
                 }
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.Game.PlayStyles)
-                @Html.HiddenFor(m => m.Game.PlayStyles)
-                <ul>
-                    @for(var playStyleIndex = 0; playStyleIndex< Model.Game.PlayStyles.Count; ++playStyleIndex)
-                    {
-                    <li>
-                        @Html.HiddenFor(m => m.Game.PlayStyles[playStyleIndex])
-                        <span>@Html.ValueFor(m => m.Game.PlayStyles[playStyleIndex].Name)</span>
-                        <a class="btn btn-close"></a>
-                    </li>
-                    }
-                </ul>
+                <div>
+                    @Html.LabelFor(m => m.Game.GameTypes)
+                    @Html.HiddenFor(m => m.Game.GameTypes)
+                </div>
+                <div>
+                @for(var index = 0; index < Model.GameTypeCheckboxes.Count(); ++index)
+                {
+                    <div>
+                        @Html.HiddenFor(m => m.GameTypeCheckboxes[index].Id)
+                        @Html.HiddenFor(m => m.GameTypeCheckboxes[index].DisplayName)
+                        <input type="checkbox" asp-for="@Model.GameTypeCheckboxes[index].IsChecked"  />
+                        <label>@Model.GameTypeCheckboxes[index].DisplayName</label>     
+                    </div>
+                }
+                </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.Game.GameTypes)
-                @Html.HiddenFor(m => m.Game.GameTypes)
-                <ul>
-                    @for(var gameTypeIndex = 0; gameTypeIndex< Model.Game.GameTypes.Count; ++gameTypeIndex)
-                    {
-                    <li>                        
-                        @Html.HiddenFor(m => m.Game.GameTypes[gameTypeIndex])
-                        <span>@Html.ValueFor(m => m.Game.GameTypes[gameTypeIndex].Name)</span>
-                        <a class="btn btn-close"></a>
-                    </li>
-                    }
-                </ul>
+                <div>
+                    @Html.LabelFor(m => m.Game.PlayStyles)
+                    @Html.HiddenFor(m => m.Game.PlayStyles)
+                </div>
+                <div>
+                @for(var index = 0; index < Model.PlayStyleCheckboxes.Count(); ++index)
+                {
+                    <div>
+                        @Html.HiddenFor(m => m.PlayStyleCheckboxes[index].Id)
+                        @Html.HiddenFor(m => m.PlayStyleCheckboxes[index].DisplayName)
+                        <input type="checkbox" asp-for="@Model.PlayStyleCheckboxes[index].IsChecked"  />
+                        <label>@Model.PlayStyleCheckboxes[index].DisplayName</label>     
+                    </div>
+                }
+                </div>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

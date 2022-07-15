@@ -28,7 +28,11 @@ namespace BoardGameDB.Pages_Games
                 return NotFound();
             }
 
-            var game = await _context.Game.FirstOrDefaultAsync(m => m.Id == id);
+            var game = await _context.Game
+                .Include(g => g.Mechanics)
+                .Include(g => g.GameTypes)
+                .Include(g => g.PlayStyles)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (game == null)
             {
                 return NotFound();

@@ -86,6 +86,33 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Game.BoardGameGeekUrl)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Game.Mechanics)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach(var mechanic in @Model.Game.Mechanics)
+            {
+            <a class="btn btn-secondary" asp-page="/Mechanics/Details" asp-route-id="@mechanic.Id">@mechanic.Name</a>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Game.GameTypes)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach(var gameType in @Model.Game.GameTypes)
+            {
+            <a class="btn btn-secondary" asp-page="/GameTypes/Details" asp-route-id="@gameType.Id">@gameType.Name</a>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Game.PlayStyles)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach(var playStyle in @Model.Game.PlayStyles)
+            {
+            <a class="btn btn-secondary" asp-page="/PlayStyles/Details" asp-route-id="@playStyle.Id">@playStyle.Name</a>
+            }
+        </dd>
     </dl>
 </div>
 <div>

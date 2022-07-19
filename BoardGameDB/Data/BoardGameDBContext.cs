@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Models;
+using BoardGameDB.Utility;
 
 namespace BoardGameDB.Data
 {
@@ -32,6 +33,8 @@ namespace BoardGameDB.Data
             builder.Entity<Game>()
                 .HasMany(g => g.PlayStyles)
                 .WithMany(ps => ps.Games);
+                    
+            builder.SetCaseInsensitiveSearchesForSQLite();
 
             base.OnModelCreating(builder);
         }

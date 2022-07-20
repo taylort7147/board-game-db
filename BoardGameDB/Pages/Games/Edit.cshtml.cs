@@ -29,14 +29,8 @@ namespace BoardGameDB.Pages_Games
         public EditModel(BoardGameDB.Data.BoardGameDBContext context)
         {
             _context = context;
-            
-            var complexityList = new List<SelectListItem>{ new SelectListItem{ Text = null, Value = null}};
-            complexityList.AddRange(
-                Enum.GetValues(typeof(Complexity))
-                    .Cast<Complexity>()
-                    .Select(c => new SelectListItem{ Text=c.ToDisplayString(), Value=c.ToDisplayString()})
-            );
-            ComplexityListItems = complexityList.AsEnumerable();
+
+            ComplexityListItems = ComplexityExtensions.AsEnumerable(includeEmptySelection: true);
             MechanicCheckboxes = new List<Checkbox>();
             GameTypeCheckboxes = new List<Checkbox>();
             PlayStyleCheckboxes = new List<Checkbox>();

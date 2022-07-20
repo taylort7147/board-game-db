@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 namespace BoardGameDB.Models
 {
     public enum Complexity
@@ -31,5 +33,17 @@ namespace BoardGameDB.Models
             null => null,
             _ => throw new ArgumentOutOfRangeException($"\"{complexity}\" is not a valid Complexity")
         };
+
+        public static IEnumerable<SelectListItem> AsEnumerable(bool includeEmptySelection = false)
+        {   
+            var complexityList = Enum.GetValues(typeof(Complexity))
+                    .Cast<Complexity>()
+                    .Select(c => new SelectListItem{ Text=c.ToDisplayString(), Value=c.ToDisplayString()}).ToList();
+            if(includeEmptySelection == false)
+            {
+                complexityList.Insert(0, new SelectListItem{ Text = null, Value = null});
+            }
+            return complexityList;
+        }
     }
 }

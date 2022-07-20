@@ -74,14 +74,17 @@
                     @Html.LabelFor(m => m.Game.Mechanics)
                     @Html.HiddenFor(m => m.Game.Mechanics)
                 </div>
-                <div class=checkbox-group>
+                <div class="form-check bgdb-checkbox-group">
                 @for(var index = 0; index < Model.MechanicCheckboxes.Count(); ++index)
                 {
                     <div>
                         @Html.HiddenFor(m => m.MechanicCheckboxes[index].Id)
                         @Html.HiddenFor(m => m.MechanicCheckboxes[index].DisplayName)
-                        <input type="checkbox" asp-for="@Model.MechanicCheckboxes[index].IsChecked"  />
-                        <label>@Model.MechanicCheckboxes[index].DisplayName</label>     
+                        @{
+                        var id="mechanic_checkbox_" + Model.MechanicCheckboxes[index].Id.ToString();
+                        <input class="form-check-input" id="@id" type="checkbox" asp-for="@Model.MechanicCheckboxes[index].IsChecked"  />
+                        <label class="form-check-label" for="@id">@Model.MechanicCheckboxes[index].DisplayName</label>     
+                        }
                     </div>
                 }
                 </div>
@@ -91,14 +94,17 @@
                     @Html.LabelFor(m => m.Game.GameTypes)
                     @Html.HiddenFor(m => m.Game.GameTypes)
                 </div>
-                <div class=checkbox-group>
+                <div class="form-check bgdb-checkbox-group">
                 @for(var index = 0; index < Model.GameTypeCheckboxes.Count(); ++index)
                 {
                     <div>
                         @Html.HiddenFor(m => m.GameTypeCheckboxes[index].Id)
                         @Html.HiddenFor(m => m.GameTypeCheckboxes[index].DisplayName)
-                        <input type="checkbox" asp-for="@Model.GameTypeCheckboxes[index].IsChecked"  />
-                        <label>@Model.GameTypeCheckboxes[index].DisplayName</label>     
+                        @{
+                        var id = "game_type_checkbox_" + Model.GameTypeCheckboxes[index].Id.ToString();
+                        <input class="form-check-input" id="@id" type="checkbox" asp-for="@Model.GameTypeCheckboxes[index].IsChecked"  />
+                        <label class="form-check-label" for="@id">@Model.GameTypeCheckboxes[index].DisplayName</label>     
+                        }
                     </div>
                 }
                 </div>
@@ -108,14 +114,17 @@
                     @Html.LabelFor(m => m.Game.PlayStyles)
                     @Html.HiddenFor(m => m.Game.PlayStyles)
                 </div>
-                <div class=checkbox-group>
+                <div class="form-check bgdb-checkbox-group">
                 @for(var index = 0; index < Model.PlayStyleCheckboxes.Count(); ++index)
                 {
                     <div>
                         @Html.HiddenFor(m => m.PlayStyleCheckboxes[index].Id)
                         @Html.HiddenFor(m => m.PlayStyleCheckboxes[index].DisplayName)
-                        <input type="checkbox" asp-for="@Model.PlayStyleCheckboxes[index].IsChecked"  />
-                        <label>@Model.PlayStyleCheckboxes[index].DisplayName</label>     
+                        @{
+                        var id = "play_style_checkbox_" + Model.PlayStyleCheckboxes[index].Id.ToString();
+                        <input class="form-check-input" id="@id" type="checkbox" asp-for="@Model.PlayStyleCheckboxes[index].IsChecked"  />
+                        <label class="form-check-label" for="@id">@Model.PlayStyleCheckboxes[index].DisplayName</label>     
+                        } 
                     </div>
                 }
                 </div>

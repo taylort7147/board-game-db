@@ -8,8 +8,42 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a class="btn btn-primary bgdb-center" asp-page="Create">Create New</a>
 </p>
+
+@{
+    var filterDisplay = Model.Filter.IsDirty ? "block" : "none";
+}
+<div id="filter-box" class="bgdb-form-container" style="display: @filterDisplay">
+    <form>
+        <div class="input-group mb-3">
+            <label class="input-group-text">Title</label>
+            <input class="form-control" type="text" asp-for="Filter.Title" />
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Complexity</span>
+            <select class="form-control bgdb-min" asp-for="Filter.ComplexityString" asp-items="@Model.ComplexityListItems"></select>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Player Count</span>
+            <input class="form-control bgdb-min" type="number" placeholder="min" asp-for="Filter.MinimumPlayerCount" />
+            <input class="form-control bgdb-min" type="number" placeholder="max" asp-for="Filter.MaximumPlayerCount" />
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Play Time (Minutes)</span>
+            <input class="form-control bgdb-min" type="number" placeholder="min" asp-for="Filter.MinimumPlayTimeMinutes" />
+            <input class="form-control bgdb-min" type="number" placeholder="max" asp-for = "Filter.MaximumPlayTimeMinutes" />
+        </div>
+        <div class="input-group mb-3">
+            <input class="form-control btn btn-outline-primary" type="submit" value="Filter" />
+        </div>  
+    </form>
+    <form>
+        <button class="form-control btn btn-outline-secondary" asp-page="./Index" asp-page-handler="ClearFilter">Clear</button>
+    </form> 
+</div>
+<button class="btn btn-outline-primary" onclick="document.getElementById('filter-box').style.display='block'; this.style.display='none'">Filter...</button>
+
 <table class="table">
     <thead>
         <tr>

@@ -17,10 +17,21 @@ body {
   margin-bottom: 60px;
 }
 
-.form-group {
-  margin: 1rem auto;
+.input-group > .bgdb-min {
+  flex: none;
+  width: fit-content;
 }
 
-.checkbox-group {
+.bgdb-checkbox-group {
   margin-left: 1rem;
+}
+
+.bgdb-form-container {  
+  padding: 1.5rem;
+  margin-right: 0;
+  margin-left: 0;
+  border-width: 1px;
+  border-radius: .25rem;
+  border-style: solid;
+  border-color: #ced4da;
 }

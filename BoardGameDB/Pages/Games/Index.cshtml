@@ -13,6 +13,7 @@
 
 @{
     var filterDisplay = Model.Filter.IsDirty ? "block" : "none";
+    var filterPromptDisplay = Model.Filter.IsDirty ? "none" : "block";
 }
 <div id="filter-box" class="bgdb-form-container" style="display: @filterDisplay">
     <form>
@@ -42,7 +43,9 @@
         <button class="form-control btn btn-outline-secondary" asp-page="./Index" asp-page-handler="ClearFilter">Clear</button>
     </form> 
 </div>
-<button class="btn btn-outline-primary" onclick="document.getElementById('filter-box').style.display='block'; this.style.display='none'">Filter...</button>
+<div style="display: @filterPromptDisplay">
+    <button class="btn btn-outline-primary" onclick="document.getElementById('filter-box').style.display='block'; this.style.display='none'">Filter...</button>
+</div>
 
 <table class="table">
     <thead>

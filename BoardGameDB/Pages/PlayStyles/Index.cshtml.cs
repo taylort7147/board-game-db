@@ -25,7 +25,9 @@ namespace BoardGameDB.Pages_PlayStyles
         {
             if (_context.PlayStyle != null)
             {
-                PlayStyle = await _context.PlayStyle.ToListAsync();
+                PlayStyle = await _context.PlayStyle
+                    .OrderBy(ps => ps.Name)
+                    .ToListAsync();
             }
         }
     }

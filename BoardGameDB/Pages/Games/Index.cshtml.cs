@@ -146,6 +146,8 @@ namespace BoardGameDB.Pages_Games
                     && g.MaximumPlayTimeMinutes <= Filter.MaximumPlayTimeMinutes.GetValueOrDefault(int.MaxValue));
             }
 
+            games = games.OrderBy(g => g.Title);
+
             if (games != null)
             {
                 Game = await games.ToListAsync();

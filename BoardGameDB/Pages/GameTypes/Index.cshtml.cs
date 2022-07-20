@@ -25,7 +25,9 @@ namespace BoardGameDB.Pages_GameTypes
         {
             if (_context.GameType != null)
             {
-                GameType = await _context.GameType.ToListAsync();
+                GameType = await _context.GameType
+                    .OrderBy(gt => gt.Name)
+                    .ToListAsync();
             }
         }
     }

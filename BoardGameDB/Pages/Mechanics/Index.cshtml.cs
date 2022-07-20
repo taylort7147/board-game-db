@@ -25,7 +25,9 @@ namespace BoardGameDB.Pages_Mechanics
         {
             if (_context.Mechanic != null)
             {
-                Mechanic = await _context.Mechanic.ToListAsync();
+                Mechanic = await _context.Mechanic
+                    .OrderBy(m => m.Name)
+                    .ToListAsync();
             }
         }
     }

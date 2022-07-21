@@ -1,12 +1,16 @@
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+var connectionString = Environment.GetEnvironmentVariable("BGDB_CONNECTION_STRING")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<BoardGameDB.Data.BoardGameDBContext>(
-    options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options => options.UseSqlite(connectionString)
 );
 
 var app = builder.Build();

@@ -5,3 +5,6 @@
 *.swp
 **/*.db*
 
+# Docker
+docker-compose.yml
+

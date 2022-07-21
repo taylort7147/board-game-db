@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
 
-namespace BoardGameDB.Pages_GameTypes
+namespace BoardGameDB.Pages_Categories
 {
     public class EditModel : PageModel
     {
@@ -21,21 +21,21 @@ namespace BoardGameDB.Pages_GameTypes
         }
 
         [BindProperty]
-        public GameType GameType { get; set; } = default!;
+        public Category Category { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.GameType == null)
+            if (id == null || _context.Category == null)
             {
                 return NotFound();
             }
 
-            var gametype =  await _context.GameType.FirstOrDefaultAsync(m => m.Id == id);
-            if (gametype == null)
+            var category =  await _context.Category.FirstOrDefaultAsync(m => m.Id == id);
+            if (category == null)
             {
                 return NotFound();
             }
-            GameType = gametype;
+            Category = category;
             return Page();
         }
 
@@ -48,7 +48,7 @@ namespace BoardGameDB.Pages_GameTypes
                 return Page();
             }
 
-            _context.Attach(GameType).State = EntityState.Modified;
+            _context.Attach(Category).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +56,7 @@ namespace BoardGameDB.Pages_GameTypes
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GameTypeExists(GameType.Id))
+                if (!CategoryExists(Category.Id))
                 {
                     return NotFound();
                 }
@@ -69,9 +69,9 @@ namespace BoardGameDB.Pages_GameTypes
             return RedirectToPage("./Index");
         }
 
-        private bool GameTypeExists(int id)
+        private bool CategoryExists(int id)
         {
-          return (_context.GameType?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Category?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

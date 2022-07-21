@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace BoardGameDB.Models
 {
-    public class GameType
+    public class Category
     {
         public int Id { get; set; }
 

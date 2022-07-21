@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
 
-namespace BoardGameDB.Pages_GameTypes
+namespace BoardGameDB.Pages_Categories
 {
     public class IndexModel : PageModel
     {
@@ -19,13 +19,13 @@ namespace BoardGameDB.Pages_GameTypes
             _context = context;
         }
 
-        public IList<GameType> GameType { get;set; } = default!;
+        public IList<Category> Category { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            if (_context.GameType != null)
+            if (_context.Category != null)
             {
-                GameType = await _context.GameType
+                Category = await _context.Category
                     .OrderBy(gt => gt.Name)
                     .ToListAsync();
             }

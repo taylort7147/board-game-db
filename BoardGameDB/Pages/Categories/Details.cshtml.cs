@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
 
-namespace BoardGameDB.Pages_GameTypes
+namespace BoardGameDB.Pages_Categories
 {
     public class DetailsModel : PageModel
     {
@@ -19,23 +19,23 @@ namespace BoardGameDB.Pages_GameTypes
             _context = context;
         }
 
-      public GameType GameType { get; set; } = default!; 
+      public Category Category { get; set; } = default!; 
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.GameType == null)
+            if (id == null || _context.Category == null)
             {
                 return NotFound();
             }
 
-            var gametype = await _context.GameType.FirstOrDefaultAsync(m => m.Id == id);
-            if (gametype == null)
+            var category = await _context.Category.FirstOrDefaultAsync(m => m.Id == id);
+            if (category == null)
             {
                 return NotFound();
             }
             else 
             {
-                GameType = gametype;
+                Category = category;
             }
             return Page();
         }

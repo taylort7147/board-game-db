@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
 
-namespace BoardGameDB.Pages_GameTypes
+namespace BoardGameDB.Pages_Categories
 {
     public class CreateModel : PageModel
     {
@@ -25,18 +25,18 @@ namespace BoardGameDB.Pages_GameTypes
         }
 
         [BindProperty]
-        public GameType GameType { get; set; } = default!;
+        public Category Category { get; set; } = default!;
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.GameType == null || GameType == null)
+          if (!ModelState.IsValid || _context.Category == null || Category == null)
             {
                 return Page();
             }
 
-            _context.GameType.Add(GameType);
+            _context.Category.Add(Category);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

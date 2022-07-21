@@ -16,7 +16,7 @@ namespace BoardGameDB.Data
         }
 
         public DbSet<Game> Game { get; set; } = null!;
-        public DbSet<GameType> GameType { get; set; } = null!;
+        public DbSet<Category> Category { get; set; } = null!;
         public DbSet<Mechanic> Mechanic { get; set; } = null!;
         public DbSet<PlayStyle> PlayStyle { get; set; } = null!;
 
@@ -27,7 +27,7 @@ namespace BoardGameDB.Data
                 .WithMany(m => m.Games);
             
             builder.Entity<Game>()
-                .HasMany(g => g.GameTypes)
+                .HasMany(g => g.Categories)
                 .WithMany(gt => gt.Games);
 
             builder.Entity<Game>()

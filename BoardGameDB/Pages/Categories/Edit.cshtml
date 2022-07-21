@@ -1,5 +1,5 @@
 @page
-@model BoardGameDB.Pages_GameTypes.EditModel
+@model BoardGameDB.Pages_Categories.EditModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -7,18 +7,18 @@
 
 <h1>Edit</h1>
 
-<h4>GameType</h4>
+<h4>Category</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="GameType.Id" />
-            <input type="hidden" asp-for="GameType.Games" />
+            <input type="hidden" asp-for="Category.Id" />
+            <input type="hidden" asp-for="Category.Games" />
             <div class="form-group">
-                <label asp-for="GameType.Name" class="control-label"></label>
-                <input asp-for="GameType.Name" class="form-control" />
-                <span asp-validation-for="GameType.Name" class="text-danger"></span>
+                <label asp-for="Category.Name" class="control-label"></label>
+                <input asp-for="Category.Name" class="form-control" />
+                <span asp-validation-for="Category.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

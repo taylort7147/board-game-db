@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
 
-namespace BoardGameDB.Pages_GameTypes
+namespace BoardGameDB.Pages_Categories
 {
     public class DeleteModel : PageModel
     {
@@ -20,40 +20,40 @@ namespace BoardGameDB.Pages_GameTypes
         }
 
         [BindProperty]
-      public GameType GameType { get; set; } = default!;
+      public Category Category { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.GameType == null)
+            if (id == null || _context.Category == null)
             {
                 return NotFound();
             }
 
-            var gametype = await _context.GameType.FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _context.Category.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (gametype == null)
+            if (category == null)
             {
                 return NotFound();
             }
             else 
             {
-                GameType = gametype;
+                Category = category;
             }
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null || _context.GameType == null)
+            if (id == null || _context.Category == null)
             {
                 return NotFound();
             }
-            var gametype = await _context.GameType.FindAsync(id);
+            var category = await _context.Category.FindAsync(id);
 
-            if (gametype != null)
+            if (category != null)
             {
-                GameType = gametype;
-                _context.GameType.Remove(GameType);
+                Category = category;
+                _context.Category.Remove(Category);
                 await _context.SaveChangesAsync();
             }
 

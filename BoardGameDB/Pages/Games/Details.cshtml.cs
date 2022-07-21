@@ -30,7 +30,7 @@ namespace BoardGameDB.Pages_Games
 
             var game = await _context.Game
                 .Include(g => g.Mechanics)
-                .Include(g => g.GameTypes)
+                .Include(g => g.Categories)
                 .Include(g => g.PlayStyles)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (game == null)

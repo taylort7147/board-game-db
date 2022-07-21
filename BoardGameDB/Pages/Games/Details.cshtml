@@ -96,12 +96,12 @@
             }
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Game.GameTypes)
+            @Html.DisplayNameFor(model => model.Game.Categories)
         </dt>
         <dd class="col-sm-10">
-            @foreach(var gameType in @Model.Game.GameTypes)
+            @foreach(var Category in @Model.Game.Categories)
             {
-            <a class="btn btn-secondary" asp-page="/GameTypes/Details" asp-route-id="@gameType.Id">@gameType.Name</a>
+            <a class="btn btn-secondary" asp-page="/Categories/Details" asp-route-id="@Category.Id">@Category.Name</a>
             }
         </dd>
         <dt class="col-sm-2">

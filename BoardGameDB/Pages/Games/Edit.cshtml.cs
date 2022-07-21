@@ -32,7 +32,7 @@ namespace BoardGameDB.Pages_Games
 
             ComplexityListItems = ComplexityExtensions.AsEnumerable(includeEmptySelection: true);
             MechanicCheckboxes = new List<Checkbox>();
-            GameTypeCheckboxes = new List<Checkbox>();
+            CategoryCheckboxes = new List<Checkbox>();
             PlayStyleCheckboxes = new List<Checkbox>();
         }
 
@@ -48,7 +48,7 @@ namespace BoardGameDB.Pages_Games
         public List<Checkbox> PlayStyleCheckboxes { get; set; }
 
         [BindProperty]
-        public List<Checkbox> GameTypeCheckboxes { get; set; }
+        public List<Checkbox> CategoryCheckboxes { get; set; }
 
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -60,7 +60,7 @@ namespace BoardGameDB.Pages_Games
 
             var game =  await _context.Game
                 .Include(g => g.Mechanics)
-                .Include(g => g.GameTypes)
+                .Include(g => g.Categories)
                 .Include(g => g.PlayStyles)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (game == null)
@@ -76,10 +76,10 @@ namespace BoardGameDB.Pages_Games
                     DisplayName = m.Name
                 }).ToListAsync();
 
-            GameTypeCheckboxes = await _context.GameType
+            CategoryCheckboxes = await _context.Category
                 .Select(gt => new Checkbox{
                     Id = gt.Id,
-                    IsChecked = Game.GameTypes.Contains(gt),
+                    IsChecked = Game.Categories.Contains(gt),
                     DisplayName = gt.Name
                 }).ToListAsync();
 
@@ -105,7 +105,7 @@ namespace BoardGameDB.Pages_Games
             _context.Attach(Game).State = EntityState.Modified;
 
             UpdateMechanics();
-            UpdateGameTypes();
+            UpdateCategories();
             UpdatePlayStyles();
 
             try
@@ -166,37 +166,37 @@ namespace BoardGameDB.Pages_Games
             }
         }
 
-        private async void UpdateGameTypes()
+        private async void UpdateCategories()
         {
-            var game = await _context.Game.Where(g => g.Id == Game.Id).Include(g => g.GameTypes).FirstAsync();
-            Game.GameTypes = game.GameTypes;
+            var game = await _context.Game.Where(g => g.Id == Game.Id).Include(g => g.Categories).FirstAsync();
+            Game.Categories = game.Categories;
 
-            var existing = game.GameTypes;
-            var all = await _context.GameType.ToListAsync();
-            var toRemove = new List<GameType>();
+            var existing = game.Categories;
+            var all = await _context.Category.ToListAsync();
+            var toRemove = new List<Category>();
 
-            foreach(var checkbox in GameTypeCheckboxes)
+            foreach(var checkbox in CategoryCheckboxes)
             {
-                var gameTypeId = checkbox.Id;
-                var gameType = all.Find(gt => gt.Id == gameTypeId);
+                var CategoryId = checkbox.Id;
+                var Category = all.Find(gt => gt.Id == CategoryId);
 
-                if(gameType != null)
+                if(Category != null)
                 {
-                    if(checkbox.IsChecked == false && existing.Contains(gameType))
+                    if(checkbox.IsChecked == false && existing.Contains(Category))
                     {
                         // Remove
-                        toRemove.Add(gameType);
+                        toRemove.Add(Category);
                     }
-                    else if(checkbox.IsChecked == true && !existing.Contains(gameType))
+                    else if(checkbox.IsChecked == true && !existing.Contains(Category))
                     {
                         // Add
-                        Game.GameTypes.Add(gameType);
+                        Game.Categories.Add(Category);
                     }
                 }
             }  
-            foreach(var gameType in toRemove)
+            foreach(var Category in toRemove)
             {
-                Game.GameTypes.Remove(gameType);
+                Game.Categories.Remove(Category);
             }
         }
         private async void UpdatePlayStyles()

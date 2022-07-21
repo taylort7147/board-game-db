@@ -1,5 +1,5 @@
 @page
-@model BoardGameDB.Pages_GameTypes.CreateModel
+@model BoardGameDB.Pages_Categories.CreateModel
 
 @{
     ViewData["Title"] = "Create";
@@ -7,21 +7,21 @@
 
 <h1>Create</h1>
 
-<h4>GameType</h4>
+<h4>Category</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="GameType.Name" class="control-label"></label>
-                <input asp-for="GameType.Name" class="form-control" />
-                <span asp-validation-for="GameType.Name" class="text-danger"></span>
+                <label asp-for="Category.Name" class="control-label"></label>
+                <input asp-for="Category.Name" class="form-control" />
+                <span asp-validation-for="Category.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="GameType.Games" class="control-label"></label>
-                <input hidden asp-for="GameType.Games" />
-                <span asp-validation-for="GameType.Games" class="text-danger"></span>
+                <label asp-for="Category.Games" class="control-label"></label>
+                <input hidden asp-for="Category.Games" />
+                <span asp-validation-for="Category.Games" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

@@ -26,8 +26,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Game.Complexity" class="control-label"></label>
-                <select asp-for="Game.ComplexityString" class="form-control" asp-items="Model.ComplexityListItems"></select>   
-                <span asp-validation-for="Game.Complexity" class="text-danger"></span>                
+                <select asp-for="Game.ComplexityString" class="form-control"
+                    asp-items="Model.ComplexityListItems"></select>
+                <span asp-validation-for="Game.Complexity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Game.MinimumPlayTimeMinutes" class="control-label"></label>
@@ -73,20 +74,49 @@
                 <div>
                     @Html.LabelFor(m => m.Game.Mechanics)
                     @Html.HiddenFor(m => m.Game.Mechanics)
+                    @Html.HiddenFor(m => m.Game.PrimaryMechanic.Id)
+                    @Html.HiddenFor(m => m.Game.PrimaryMechanic.Name)
+                    @Html.HiddenFor(m => m.Game.PrimaryMechanic.Games)
+                    <div>
+                        <span asp-validation-for="PrimaryMechanicId" class="text-danger"></span>
+                    </div>
+
                 </div>
                 <div class="form-check bgdb-checkbox-group">
-                @for(var index = 0; index < Model.MechanicCheckboxes.Count(); ++index)
-                {
-                    <div>
-                        @Html.HiddenFor(m => m.MechanicCheckboxes[index].Id)
-                        @Html.HiddenFor(m => m.MechanicCheckboxes[index].DisplayName)
+
+                    <table>
                         @{
-                        var id="mechanic_checkbox_" + Model.MechanicCheckboxes[index].Id.ToString();
-                        <input class="form-check-input" id="@id" type="checkbox" asp-for="@Model.MechanicCheckboxes[index].IsChecked"  />
-                        <label class="form-check-label" for="@id">@Model.MechanicCheckboxes[index].DisplayName</label>     
                         }
-                    </div>
-                }
+                        @for (var index = 0; index < Model.MechanicCheckboxes.Count(); ++index)
+                        {
+                            <tr class="mb-2">
+                                @Html.HiddenFor(m => m.MechanicCheckboxes[index].Id)
+                                @Html.HiddenFor(m => m.MechanicCheckboxes[index].DisplayName)
+                                @Html.HiddenFor(m => m.MechanicPrimaryCheckboxes[index].Id)
+                                @Html.HiddenFor(m => m.MechanicPrimaryCheckboxes[index].DisplayName)
+                                @{
+                                    var checkboxId = "mechanic_checkbox_" + Model.MechanicCheckboxes[index].Id.ToString();
+                                    var radioId = "mechanic_radio_" + Model.MechanicCheckboxes[index].Id.ToString();
+
+                                    <td>
+                                        <input class="form-check-input" id="@checkboxId" type="checkbox"
+                                    asp-for="MechanicCheckboxes[index].IsChecked" />
+                                        <label class="form-check-label"
+                                        for="@checkboxId">@Model.MechanicCheckboxes[index].DisplayName</label>
+                                    </td>
+                                    <td>
+                                        <input class="form-check-input btn-check" id="@radioId" type="radio"
+                                    checked="@Model.MechanicPrimaryCheckboxes[index].IsChecked" autocomplete="off"
+                                    value="@Model.MechanicPrimaryCheckboxes[index].Id" asp-for="PrimaryMechanicId">
+                                        <label class="btn btn-outline-primary btn-sm bgdb-btn-toggle" for="@radioId">
+                                            <span class="bgdb-toggle-on">Primary</span>
+                                            <span class="bgdb-toggle-off">Set Primary</span>
+                                        </label>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </table>
                 </div>
             </div>
             <div class="form-group">
@@ -95,18 +125,19 @@
                     @Html.HiddenFor(m => m.Game.Categories)
                 </div>
                 <div class="form-check bgdb-checkbox-group">
-                @for(var index = 0; index < Model.CategoryCheckboxes.Count(); ++index)
-                {
-                    <div>
-                        @Html.HiddenFor(m => m.CategoryCheckboxes[index].Id)
-                        @Html.HiddenFor(m => m.CategoryCheckboxes[index].DisplayName)
-                        @{
-                        var id = "game_type_checkbox_" + Model.CategoryCheckboxes[index].Id.ToString();
-                        <input class="form-check-input" id="@id" type="checkbox" asp-for="@Model.CategoryCheckboxes[index].IsChecked"  />
-                        <label class="form-check-label" for="@id">@Model.CategoryCheckboxes[index].DisplayName</label>     
-                        }
-                    </div>
-                }
+                    @for (var index = 0; index < Model.CategoryCheckboxes.Count(); ++index)
+                    {
+                        <div>
+                            @Html.HiddenFor(m => m.CategoryCheckboxes[index].Id)
+                            @Html.HiddenFor(m => m.CategoryCheckboxes[index].DisplayName)
+                            @{
+                                var id = "game_type_checkbox_" + Model.CategoryCheckboxes[index].Id.ToString();
+                                <input class="form-check-input" id="@id" type="checkbox"
+                            asp-for="@Model.CategoryCheckboxes[index].IsChecked" />
+                                <label class="form-check-label" for="@id">@Model.CategoryCheckboxes[index].DisplayName</label>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
             <div class="form-group">
@@ -115,18 +146,19 @@
                     @Html.HiddenFor(m => m.Game.PlayStyles)
                 </div>
                 <div class="form-check bgdb-checkbox-group">
-                @for(var index = 0; index < Model.PlayStyleCheckboxes.Count(); ++index)
-                {
-                    <div>
-                        @Html.HiddenFor(m => m.PlayStyleCheckboxes[index].Id)
-                        @Html.HiddenFor(m => m.PlayStyleCheckboxes[index].DisplayName)
-                        @{
-                        var id = "play_style_checkbox_" + Model.PlayStyleCheckboxes[index].Id.ToString();
-                        <input class="form-check-input" id="@id" type="checkbox" asp-for="@Model.PlayStyleCheckboxes[index].IsChecked"  />
-                        <label class="form-check-label" for="@id">@Model.PlayStyleCheckboxes[index].DisplayName</label>     
-                        } 
-                    </div>
-                }
+                    @for (var index = 0; index < Model.PlayStyleCheckboxes.Count(); ++index)
+                    {
+                        <div>
+                            @Html.HiddenFor(m => m.PlayStyleCheckboxes[index].Id)
+                            @Html.HiddenFor(m => m.PlayStyleCheckboxes[index].DisplayName)
+                            @{
+                                var id = "play_style_checkbox_" + Model.PlayStyleCheckboxes[index].Id.ToString();
+                                <input class="form-check-input" id="@id" type="checkbox"
+                            asp-for="@Model.PlayStyleCheckboxes[index].IsChecked" />
+                                <label class="form-check-label" for="@id">@Model.PlayStyleCheckboxes[index].DisplayName</label>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
 
@@ -138,16 +170,9 @@
 </div>
 
 <div>
-    <h5>Details</h5>
-<div class="row">
-    <div class="col-md-4">
-    </div>
-<div>
-
-<div>
     <a asp-page="./Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

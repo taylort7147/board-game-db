@@ -32,6 +32,7 @@ namespace BoardGameDB.Pages_Games
 
             ComplexityListItems = ComplexityExtensions.AsEnumerable(includeEmptySelection: true);
             MechanicCheckboxes = new List<Checkbox>();
+            MechanicPrimaryCheckboxes = new List<Checkbox>();
             CategoryCheckboxes = new List<Checkbox>();
             PlayStyleCheckboxes = new List<Checkbox>();
         }
@@ -39,10 +40,17 @@ namespace BoardGameDB.Pages_Games
         [BindProperty]
         public Game Game { get; set; } = default!;
 
+        [BindProperty]
+        public int? PrimaryMechanicId { get; set; }
+
+        [BindProperty]
         public IEnumerable<SelectListItem> ComplexityListItems { get; set; }
 
         [BindProperty]
         public List<Checkbox> MechanicCheckboxes { get; set; }
+
+        [BindProperty]
+        public List<Checkbox> MechanicPrimaryCheckboxes { get; set; }
 
         [BindProperty]
         public List<Checkbox> PlayStyleCheckboxes { get; set; }
@@ -59,6 +67,7 @@ namespace BoardGameDB.Pages_Games
             }
 
             var game =  await _context.Game
+                .Include(g => g.PrimaryMechanic)
                 .Include(g => g.Mechanics)
                 .Include(g => g.Categories)
                 .Include(g => g.PlayStyles)
@@ -68,11 +77,19 @@ namespace BoardGameDB.Pages_Games
                 return NotFound();
             }
             Game = game;
+            PrimaryMechanicId = Game.PrimaryMechanic == null ? null : Game.PrimaryMechanic.Id;
 
             MechanicCheckboxes = await _context.Mechanic
                 .Select(m => new Checkbox{
                     Id = m.Id,
                     IsChecked = Game.Mechanics.Contains(m),
+                    DisplayName = m.Name
+                }).ToListAsync();
+
+            MechanicPrimaryCheckboxes = await _context.Mechanic
+                .Select(m => new Checkbox{
+                    Id = m.Id,
+                    IsChecked = m.Id == PrimaryMechanicId,
                     DisplayName = m.Name
                 }).ToListAsync();
 
@@ -104,9 +121,22 @@ namespace BoardGameDB.Pages_Games
 
             _context.Attach(Game).State = EntityState.Modified;
 
-            UpdateMechanics();
-            UpdateCategories();
-            UpdatePlayStyles();
+            try
+            {
+                UpdateMechanics();
+                UpdateCategories();
+                UpdatePlayStyles();
+            }
+            catch(InvalidDataException)
+            {
+                return Page();
+            }
+
+            // Updates might have added validation errors
+            if(!ModelState.IsValid)
+            {
+                return Page();
+            }
 
             try
             {
@@ -134,8 +164,13 @@ namespace BoardGameDB.Pages_Games
 
         private async void UpdateMechanics()
         {
-            var game = await _context.Game.Where(g => g.Id == Game.Id).Include(g => g.Mechanics).FirstAsync();
+            var game = await _context.Game
+                .Where(g => g.Id == Game.Id)
+                .Include(g => g.Mechanics)
+                .Include(g => g.PrimaryMechanic)
+                .FirstAsync();
             Game.Mechanics = game.Mechanics;
+            Game.PrimaryMechanic = game.PrimaryMechanic;
 
             var existing = game.Mechanics;
             var all = await _context.Mechanic.ToListAsync();
@@ -163,6 +198,23 @@ namespace BoardGameDB.Pages_Games
             foreach(var mechanic in toRemove)
             {
                 Game.Mechanics.Remove(mechanic);
+            }
+            
+            if(PrimaryMechanicId == null)
+            {
+                ModelState.AddModelError(nameof(PrimaryMechanicId), "You must choose a primary mechanic");
+                return;
+            }
+            else
+            {
+                var mechanicForPrimaryMechanic = MechanicCheckboxes.First(c => c.Id == PrimaryMechanicId);
+                if(!mechanicForPrimaryMechanic.IsChecked)
+                {
+                    ModelState.AddModelError(nameof(PrimaryMechanicId), "Primary mechanic must be one of the selected mechanics");
+                    return;
+                }
+                var primaryMechanic = Game.Mechanics.First(m => m.Id == PrimaryMechanicId);
+                Game.PrimaryMechanic = primaryMechanic;
             }
         }
 

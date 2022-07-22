@@ -29,6 +29,15 @@
                 <span asp-validation-for="Game.Complexity" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <input hidden asp-for="Game.PrimaryMechanic.Id" value="0" />
+                <input hidden asp-for="Game.PrimaryMechanic.Name" value="___" />
+                <input hidden asp-for="Game.PrimaryMechanic.Games" />
+
+                <label asp-for="Game.PrimaryMechanic" class="control-label"></label>
+                <select asp-for="PrimaryMechanicIdString" class="form-control" asp-items="Model.MechanicListItems"></select>   
+                <span asp-validation-for="Game.PrimaryMechanic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Game.MinimumPlayerCount" class="control-label"></label>
                 <input asp-for="Game.MinimumPlayerCount" class="form-control" />
                 <span asp-validation-for="Game.MinimumPlayerCount" class="text-danger"></span>
@@ -69,17 +78,17 @@
                 <span asp-validation-for="Game.BoardGameGeekUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Game.Mechanics" class="control-label"></label>
+                <label hidden asp-for="Game.Mechanics" class="control-label"></label>
                 <input hidden asp-for="Game.Mechanics" />
                 <span asp-validation-for="Game.Mechanics" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Game.PlayStyles" class="control-label"></label>
+                <label hidden asp-for="Game.PlayStyles" class="control-label"></label>
                 <input hidden asp-for="Game.PlayStyles" />
                 <span asp-validation-for="Game.PlayStyles" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Game.Categories" class="control-label"></label>
+                <label hidden asp-for="Game.Categories" class="control-label"></label>
                 <input hidden asp-for="Game.Categories" />
                 <span asp-validation-for="Game.Categories" class="text-danger"></span>
             </div>

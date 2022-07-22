@@ -21,7 +21,11 @@ namespace BoardGameDB.Data
         public DbSet<PlayStyle> PlayStyle { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
+
         {
+            builder.Entity<Game>()
+                .HasOne(g => g.PrimaryMechanic);
+                
             builder.Entity<Game>()
                 .HasMany(g => g.Mechanics)
                 .WithMany(m => m.Games);

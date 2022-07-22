@@ -35,3 +35,16 @@ body {
   border-style: solid;
   border-color: #ced4da;
 }
+
+.btn-check:checked + label > .bgdb-toggle-off,
+.btn-check:not(:checked) + label > .bgdb-toggle-on {
+  display:none;
+}
+
+.bgdb-danger {
+  color: red;
+}
+
+.bgdb-upper {
+  text-transform: uppercase;
+}

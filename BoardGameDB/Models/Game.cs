@@ -17,12 +17,15 @@ namespace BoardGameDB.Models
 
         public Complexity? Complexity { get; set; }
 
+        [Required]
+        [Display(Name = "Primary Mechanic")]
+        public Mechanic PrimaryMechanic { get; set; } = null!;
+
         [Display(Name = "Play Time (Min)")]
         public int MinimumPlayTimeMinutes { get; set; }
 
         [Display(Name = "Play Time (Max)")]
         public int MaximumPlayTimeMinutes { get; set; }
-
 
         [Display(Name = "Player Count (Min)")]
         public int MinimumPlayerCount { get; set; }

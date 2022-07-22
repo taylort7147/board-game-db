@@ -39,7 +39,7 @@ namespace BoardGameDB.Models
             var complexityList = Enum.GetValues(typeof(Complexity))
                     .Cast<Complexity>()
                     .Select(c => new SelectListItem{ Text=c.ToDisplayString(), Value=c.ToDisplayString()}).ToList();
-            if(includeEmptySelection == false)
+            if(includeEmptySelection)
             {
                 complexityList.Insert(0, new SelectListItem{ Text = null, Value = null});
             }

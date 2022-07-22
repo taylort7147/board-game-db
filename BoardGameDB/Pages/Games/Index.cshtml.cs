@@ -106,7 +106,7 @@ namespace BoardGameDB.Pages_Games
         {
             _context = context;
             Filter = new FilterCriteria();
-            ComplexityListItems = ComplexityExtensions.AsEnumerable(includeEmptySelection: false);
+            ComplexityListItems = ComplexityExtensions.AsEnumerable(includeEmptySelection: true);
         }
 
         public IList<Game> Game { get;set; } = default!;

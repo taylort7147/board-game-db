@@ -27,13 +27,11 @@
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text">Player Count</span>
-            <input class="form-control bgdb-min" type="number" placeholder="min" asp-for="Filter.MinimumPlayerCount" />
-            <input class="form-control bgdb-min" type="number" placeholder="max" asp-for="Filter.MaximumPlayerCount" />
+            <input class="form-control bgdb-min" type="number" asp-for="Filter.PlayerCount" />
         </div>
         <div class="input-group mb-3">
-            <span class="input-group-text">Play Time (Minutes)</span>
-            <input class="form-control bgdb-min" type="number" placeholder="min" asp-for="Filter.MinimumPlayTimeMinutes" />
-            <input class="form-control bgdb-min" type="number" placeholder="max" asp-for = "Filter.MaximumPlayTimeMinutes" />
+            <span class="input-group-text">Play Time</span>
+            <select class="form-control bgdb-min" type="number" asp-for="Filter.PlayTimeRangeString" asp-items="Model.Filter.PlayTimeRangeListItems"></select>
         </div>
         <div class="input-group mb-3">
             <input class="form-control btn btn-outline-primary" type="submit" value="Filter" />

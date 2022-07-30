@@ -1,3 +1,7 @@
+:root {
+  --bgdb-suggestion-color: #999;
+}
+
 html {
   font-size: 14px;
 }
@@ -47,4 +51,21 @@ body {
 
 .bgdb-upper {
   text-transform: uppercase;
+}
+
+span.bgdb-suggestion-input {
+  color: var(--bgdb-suggestion-color);
+}
+
+input.bgdb-suggestion-input,
+span.bgdb-suggestion-input {
+  display: inline-block;
+  box-sizing: content-box;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  white-space: pre;
+  border: none;
+  outline: none;
 }

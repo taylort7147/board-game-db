@@ -26,6 +26,7 @@ namespace BoardGameDB.Pages_Games
                     new SelectListItem{ Text = Pages_Games.PlayTimeRange.Between1And2Hours.ToDisplayString(), Value = Pages_Games.PlayTimeRange.Between1And2Hours.ToDisplayString()},
                     new SelectListItem{ Text = Pages_Games.PlayTimeRange.MoreThan2Hours.ToDisplayString(), Value = Pages_Games.PlayTimeRange.MoreThan2Hours.ToDisplayString()},
                 };
+                _MechanicsList = new List<string>();
             }
 
             private bool _IsDirty = false;
@@ -96,6 +97,28 @@ namespace BoardGameDB.Pages_Games
                 }
             }
 
+            private List<string>? _MechanicsList;
+            public List<string>? MechanicsList
+            {
+                get { return _MechanicsList; }
+                set { _MechanicsList = value; }
+            }
+
+            public string MechanicsListString
+            {
+                get { return _MechanicsList == null ? "" : string.Join(", ", _MechanicsList); }
+                set
+                {
+                    _IsDirty = true;
+                    if (value != null)
+                    {
+                        _MechanicsList = value
+                        .Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                        .Select(s => s.Trim())
+                        .ToList();
+                    }
+                }
+            }
         }
 
         public IndexModel(BoardGameDB.Data.BoardGameDBContext context)
@@ -112,9 +135,14 @@ namespace BoardGameDB.Pages_Games
 
         public IEnumerable<SelectListItem> ComplexityListItems { get; set; }
 
+        [BindProperty]
+        public List<string> Mechanics { get; set; } = default!;
+
 
         public async Task OnGetAsync()
         {
+            Mechanics = await _context.Mechanic.OrderBy(m => m.Name).Select(m => m.Name).ToListAsync();
+
             var games = from g in _context.Game
                         select g;
 
@@ -171,10 +199,22 @@ namespace BoardGameDB.Pages_Games
 
             games = games.OrderBy(g => g.Title);
 
+            if (Filter.MechanicsList != null && Filter.MechanicsList.Count > 0)
+            {
+                games = games.Include(g => g.Mechanics);
+                var mechanicsList = Filter.MechanicsList
+                    .Select(ms => _context.Mechanic
+                        .Where(m => m.Name.ToLower() == ms.ToLower())
+                        .First())
+                    .ToList();
+                    
+                games = games.Where(g => g.Mechanics.All(m => mechanicsList.Contains(m)));
+            }
             if (games != null)
             {
                 Game = await games.ToListAsync();
             }
+
         }
 
         public async Task OnGetClearFilterAsync()

@@ -23,7 +23,8 @@
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text">Complexity</span>
-            <select class="form-control bgdb-min" asp-for="Filter.ComplexityString" asp-items="@Model.ComplexityListItems"></select>
+            <select class="form-control bgdb-min" asp-for="Filter.ComplexityString"
+                asp-items="@Model.ComplexityListItems"></select>
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text">Player Count</span>
@@ -31,18 +32,28 @@
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text">Play Time</span>
-            <select class="form-control bgdb-min" type="number" asp-for="Filter.PlayTimeRangeString" asp-items="Model.Filter.PlayTimeRangeListItems"></select>
+            <select class="form-control bgdb-min" type="number" asp-for="Filter.PlayTimeRangeString"
+                asp-items="Model.Filter.PlayTimeRangeListItems"></select>
+        </div>
+        <div class="input-group mb-3">
+            <label class="input-group-text">Mechanics</label>
+            <div class="form-control">
+                <input id="filter_mechanics_list" class="bgdb-suggestion-input" type="text" asp-for="Filter.MechanicsListString"
+                    autocomplete="off" /><span id="filter_mechanics_list_suggestion" class="bgdb-suggestion-input"></span>
+            </div>
         </div>
         <div class="input-group mb-3">
             <input class="form-control btn btn-outline-primary" type="submit" value="Filter" />
-        </div>  
+        </div>
     </form>
     <form>
-        <button class="form-control btn btn-outline-secondary" asp-page="./Index" asp-page-handler="ClearFilter">Clear</button>
-    </form> 
+        <button class="form-control btn btn-outline-secondary" asp-page="./Index"
+            asp-page-handler="ClearFilter">Clear</button>
+    </form>
 </div>
 <div style="display: @filterPromptDisplay">
-    <button class="btn btn-outline-primary" onclick="document.getElementById('filter-box').style.display='block'; this.style.display='none'">Filter...</button>
+    <button class="btn btn-outline-primary"
+        onclick="document.getElementById('filter-box').style.display='block'; this.style.display='none'">Filter...</button>
 </div>
 
 <table class="table">
@@ -63,55 +74,70 @@
             <th>
                 Play Time
             </th>
-            <th>                
+            <th>
             </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Game) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ComplexityString)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MinimumPlayerCount)
-                @if(item.MinimumPlayerCount != item.MaximumPlayerCount)
-                {
-                    <span>-</span>
-                    @Html.DisplayFor(modelItem => item.MaximumPlayerCount)
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MinimumPlayTimeMinutes)
-                @if(item.MinimumPlayTimeMinutes == item.MaximumPlayTimeMinutes)
-                {
-                }
-                else
-                {
-                    <span>-</span>
-                    @Html.DisplayFor(modelItem => item.MaximumPlayTimeMinutes)
-                }            
-                @if(item.MinimumPlayTimeMinutes == 1)
-                {
-                    <span>Minute</span>
-                }
-                else
-                {
-                    <span>Minutes</span>
-                }
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Game)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ComplexityString)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MinimumPlayerCount)
+                    @if (item.MinimumPlayerCount != item.MaximumPlayerCount)
+                    {
+                        <span>-</span>
+                        @Html.DisplayFor(modelItem => item.MaximumPlayerCount)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MinimumPlayTimeMinutes)
+                    @if (item.MinimumPlayTimeMinutes == item.MaximumPlayTimeMinutes)
+                    {
+                    }
+                    else
+                    {
+                        <span>-</span>
+                        @Html.DisplayFor(modelItem => item.MaximumPlayTimeMinutes)
+                    }
+                    @if (item.MinimumPlayTimeMinutes == 1)
+                    {
+                        <span>Minute</span>
+                    }
+                    else
+                    {
+                        <span>Minutes</span>
+                    }
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts{
+
+<script>
+    $(function () {
+        var mechanics = @Json.Serialize(Model.Mechanics);
+        @* $("#filter_mechanics_list").autocomplete({
+            source: mechanics,
+            autoFocus: true
+        }); *@
+        setTabComplete("filter_mechanics_list", "filter_mechanics_list_suggestion", mechanics);
+    });
+</script>
+}

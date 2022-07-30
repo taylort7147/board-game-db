@@ -45,9 +45,9 @@ namespace BoardGameDB.Models
         [DataType(DataType.Url)]
         public string? RulesVideoUrl { get; set; }
 
-        [Display(Name = "BGG URL")]
+        [Display(Name = "BoardGameGeek ID")]
         [DataType(DataType.Url)]
-        public string? BoardGameGeekUrl { get; set; }        
+        public string? BoardGameGeekId { get; set; }        
 
         [NotMapped]
         public string? ComplexityString { 

@@ -197,7 +197,9 @@ namespace BoardGameDB.Pages_Games
                 }
             }
 
-            games = games.OrderBy(g => g.Title);
+            games = games
+                .Include(g => g.PrimaryMechanic)
+                .OrderBy(g => g.Title);
 
             if (Filter.MechanicsList != null && Filter.MechanicsList.Count > 0)
             {
@@ -207,7 +209,7 @@ namespace BoardGameDB.Pages_Games
                         .Where(m => m.Name.ToLower() == ms.ToLower())
                         .First())
                     .ToList();
-                    
+
                 games = games.Where(g => g.Mechanics.All(m => mechanicsList.Contains(m)));
             }
             if (games != null)

@@ -66,6 +66,9 @@
                 @Html.DisplayNameFor(model => model.Game[0].Location)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Game[0].PrimaryMechanic)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Game[0].Complexity)
             </th>
             <th>
@@ -87,6 +90,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrimaryMechanic.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ComplexityString)

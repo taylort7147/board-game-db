@@ -29,7 +29,9 @@ namespace BoardGameDB.Pages_Games
                 return NotFound();
             }
 
-            var game = await _context.Game.FirstOrDefaultAsync(m => m.Id == id);
+            var game = await _context.Game
+                .Include(g => g.PrimaryMechanic)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (game == null)
             {

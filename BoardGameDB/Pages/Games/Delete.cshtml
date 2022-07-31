@@ -25,6 +25,12 @@
             @Html.DisplayFor(model => model.Game.Location)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Game.PrimaryMechanic)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Game.PrimaryMechanic.Name)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Game.Complexity)
         </dt>
         <dd class="col-sm-10">

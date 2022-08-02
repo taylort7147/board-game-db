@@ -80,6 +80,7 @@ namespace BoardGameDB.Pages_Games
             PrimaryMechanicId = Game.PrimaryMechanic == null ? null : Game.PrimaryMechanic.Id;
 
             MechanicCheckboxes = await _context.Mechanic
+                .OrderBy(m => m.Name)
                 .Select(m => new Checkbox{
                     Id = m.Id,
                     IsChecked = Game.Mechanics.Contains(m),
@@ -87,6 +88,7 @@ namespace BoardGameDB.Pages_Games
                 }).ToListAsync();
 
             MechanicPrimaryCheckboxes = await _context.Mechanic
+                .OrderBy(m => m.Name)
                 .Select(m => new Checkbox{
                     Id = m.Id,
                     IsChecked = m.Id == PrimaryMechanicId,
@@ -94,6 +96,7 @@ namespace BoardGameDB.Pages_Games
                 }).ToListAsync();
 
             CategoryCheckboxes = await _context.Category
+                .OrderBy(c => c.Name)
                 .Select(gt => new Checkbox{
                     Id = gt.Id,
                     IsChecked = Game.Categories.Contains(gt),
@@ -101,6 +104,7 @@ namespace BoardGameDB.Pages_Games
                 }).ToListAsync();
 
             PlayStyleCheckboxes = await _context.PlayStyle
+                .OrderBy(ps => ps.Name)
                 .Select(ps => new Checkbox{
                     Id = ps.Id,
                     IsChecked = Game.PlayStyles.Contains(ps),

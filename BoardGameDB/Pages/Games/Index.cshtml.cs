@@ -200,26 +200,34 @@ namespace BoardGameDB.Pages_Games
                         break;
                 }
             }
-
             games = games
                 .Include(g => g.PrimaryMechanic)
                 .OrderBy(g => g.Title);
 
-            if (Filter.MechanicsList != null && Filter.MechanicsList.Count > 0)
-            {
-                games = games.Include(g => g.Mechanics);
-                var mechanicsList = Filter.MechanicsList
-                    .Select(ms => _context.Mechanic
-                        .Where(m => m.Name.ToLower() == ms.ToLower())
-                        .First())
-                    .ToList();
-
-                games = games.Where(g => g.Mechanics.All(m => mechanicsList.Contains(m)));
-            }
             if (games != null)
             {
-                Game = await games.ToListAsync();
+                if (Filter.MechanicsList != null && Filter.MechanicsList.Count > 0)
+                {
+                    var mechanicsList = Filter.MechanicsList
+                        .Select(ms => _context.Mechanic
+                            .Where(m => m.Name.ToLower() == ms.ToLower())
+                            .First())
+                        .ToList();
+
+                    // Client-side evaluation
+                    Game = games
+                        .Include(g => g.Mechanics)
+                        .AsEnumerable()
+                        .Where(g => mechanicsList.All(m => g.Mechanics.Contains(m)))
+                        .ToList();
+                }
+                else
+                {
+                    Game = await games.ToListAsync();
+                }
             }
+
+
 
         }
 

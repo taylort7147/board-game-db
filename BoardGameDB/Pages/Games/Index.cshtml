@@ -38,8 +38,18 @@
         <div class="input-group mb-3">
             <label class="input-group-text">Mechanics</label>
             <div class="form-control">
-                <input id="filter_mechanics_list" class="bgdb-suggestion-input" type="text" asp-for="Filter.MechanicsListString"
-                    autocomplete="off" /><span id="filter_mechanics_list_suggestion" class="bgdb-suggestion-input"></span>
+                <input id="filter_mechanics_list" class="bgdb-suggestion-input" type="text"
+                    asp-for="Filter.MechanicsListString" 
+                    autocomplete="off"
+                    list="filter_mechanics_list_suggestion_datalist" 
+                    placeholder="List of mechanics separated by ';'"/><span id="filter_mechanics_list_suggestion"
+                    class="bgdb-suggestion-input"></span>
+                @* <datalist id="filter_mechanics_list_suggestion_datalist">
+                @foreach(var mechanic in Model.Mechanics)
+                {
+                    <option value="@mechanic"></option>
+                }
+                </datalist> *@
             </div>
         </div>
         <div class="input-group mb-3">
@@ -140,10 +150,10 @@
     $(function () {
         var mechanics = @Json.Serialize(Model.Mechanics);
         @* $("#filter_mechanics_list").autocomplete({
-            source: mechanics,
-            autoFocus: true
-        }); *@
-        setTabComplete("filter_mechanics_list", "filter_mechanics_list_suggestion", mechanics);
+                source: mechanics,
+                autoFocus: true
+                }); *@
+            setTabComplete("filter_mechanics_list", "filter_mechanics_list_suggestion", mechanics, ";");
     });
 </script>
 }

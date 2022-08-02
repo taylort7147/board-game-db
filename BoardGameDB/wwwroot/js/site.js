@@ -3,29 +3,29 @@
 
 // Write your JavaScript code.
 
-function setTabComplete(inputId, suggestionTextId, items) {
+function setTabComplete(inputId, suggestionTextId, items, sep) {
     console.log("setTabComplete");
     console.log(`inputId: ${inputId}`);
     console.log(`suggestionTextId: ${suggestionTextId}`);
-    
+
     var inputElement = document.getElementById(inputId);
     var suggestionTextElement = document.getElementById(suggestionTextId);
 
-    
+
     inputElement.addEventListener("input", evt => {
         console.log("input");
         console.log(evt);
-        showSuggestion(inputElement, suggestionTextElement, items);
+        showSuggestion(inputElement, suggestionTextElement, items, sep);
         resizeSuggestion(inputElement, suggestionTextElement);
     });
-    
+
     inputElement.parentElement.addEventListener("click", () => inputElement.focus());
     suggestionTextElement.addEventListener("click", () => inputElement.focus());
-    
-    
+
+
     $("body").find("#" + inputId).keydown(evt => {
         var code = evt.code || evt.which;
-        var inputElement = evt.currentTarget;
+        // var inputElement = evt.currentTarget;
         if (code == '9' || code == "Tab") {
             completeSuggestion(inputElement, suggestionTextElement, items)
             resizeSuggestion(inputElement, suggestionTextElement);
@@ -34,15 +34,19 @@ function setTabComplete(inputId, suggestionTextId, items) {
     });
 
     resizeSuggestion(inputElement, suggestionTextElement);
+
 }
 
-function findSuggestion(inputText, items) {
+function findSuggestion(inputText, items, sep) {
     console.log("findSuggestion");
     var suggestion = "";
+    if (sep === undefined) {
+        sep = ",";
+    }
 
     var inputValue = inputText;
     console.log(`Input: "${inputValue}"`);
-    var inputList = inputValue.split(",");
+    var inputList = inputValue.split(sep);
     inputList.forEach((value, index, array) => array[index] = value.trimLeft());
     var lastInputValue = inputList[inputList.length - 1];
     console.log(`Last input value: "${lastInputValue}"`);
@@ -70,11 +74,11 @@ function findSuggestion(inputText, items) {
     return suggestion;
 }
 
-function showSuggestion(inputElement, suggestionTextElement, items) {
+function showSuggestion(inputElement, suggestionTextElement, items, sep) {
     console.log("showSuggestion");
 
     // Find suggestion
-    var suggestion = findSuggestion(inputElement.value, items);
+    var suggestion = findSuggestion(inputElement.value, items, sep);
 
     // Insert suggestion text
     suggestionTextElement.innerHTML = suggestion;
@@ -90,6 +94,9 @@ function completeSuggestion(inputElement, suggestionTextElement, items) {
 
 function resizeSuggestion(inputElement, suggestionTextElement) {
     var inputElementWidth = getTextWidth(inputElement.value, getCanvasFont(inputElement));
+    if (inputElement.value.length == 0) {
+        inputElementWidth = getTextWidth(inputElement.placeholder, getCanvasFont(inputElement));
+    }
     var suggestionTextWidth = getTextWidth(suggestionTextElement.innerHTML, getCanvasFont(suggestionTextElement));
 
     inputElementWidth = inputElementWidth == 0 ? "1px" : inputElementWidth;

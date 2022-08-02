@@ -113,7 +113,7 @@ namespace BoardGameDB.Pages_Games
                     if (value != null)
                     {
                         _MechanicsList = value
-                        .Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                        .Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                         .Select(s => s.Trim())
                         .ToList();
                     }

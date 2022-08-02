@@ -53,9 +53,14 @@ body {
   text-transform: uppercase;
 }
 
+input.bgdb-suggestion-input {
+  margin: auto 0;
+}
+
 span.bgdb-suggestion-input {
   color: var(--bgdb-suggestion-color);
 }
+
 
 input.bgdb-suggestion-input,
 span.bgdb-suggestion-input {

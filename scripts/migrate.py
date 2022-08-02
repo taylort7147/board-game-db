@@ -280,15 +280,17 @@ def try_insert_game(conn, game, mechanic_dict={}, play_style_dict={}, category_d
             INSERT INTO [Game] (
                 [Title], 
                 [Location], 
+                [Complexity],
                 [PrimaryMechanicId],
                 [MinimumPlayTimeMinutes], 
                 [MaximumPlayTimeMinutes], 
                 [MinimumPlayerCount], 
                 [MaximumPlayerCount])
-            VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING [Id]
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING [Id]
             """, (
                 game.title,
                 game.location,
+                game.complexity_raw,
                 primary_game_type.id,
                 game.min_play_time,
                 game.max_play_time,

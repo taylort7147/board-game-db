@@ -153,7 +153,8 @@ namespace BoardGameDB.Pages_Games
 
             if (Filter.Complexity != null)
             {
-                games = games.Where(g => g.Complexity == Filter.Complexity);
+                // TODO: Create an expression to convert complexity enum into range
+                // games = games.Where(g => g.Complexity == Filter.Complexity);
             }
 
             if (Filter.PlayerCount.HasValue)

@@ -15,6 +15,12 @@ using BoardGameDB.Models;
 
 namespace BoardGameDB.Pages_Games
 {
+    // TODO: Fix data transfer size
+    // Right now each checkbox item has at least one
+    // piece of data associated with it. This solution does
+    // not scale well with large numbers of data.
+    [RequestFormLimits(ValueCountLimit = int.MaxValue)]
+
     public class EditModel : PageModel
     {
         public class Checkbox
@@ -30,7 +36,7 @@ namespace BoardGameDB.Pages_Games
         {
             _context = context;
 
-            ComplexityListItems = ComplexityExtensions.AsEnumerable(includeEmptySelection: true);
+            // ComplexityListItems = ComplexityExtensions.AsEnumerable(includeEmptySelection: true);
             MechanicCheckboxes = new List<Checkbox>();
             MechanicPrimaryCheckboxes = new List<Checkbox>();
             CategoryCheckboxes = new List<Checkbox>();
@@ -43,8 +49,8 @@ namespace BoardGameDB.Pages_Games
         [BindProperty]
         public int? PrimaryMechanicId { get; set; }
 
-        [BindProperty]
-        public IEnumerable<SelectListItem> ComplexityListItems { get; set; }
+        // [BindProperty]
+        // public IEnumerable<SelectListItem> ComplexityListItems { get; set; }
 
         [BindProperty]
         public List<Checkbox> MechanicCheckboxes { get; set; }
@@ -66,7 +72,7 @@ namespace BoardGameDB.Pages_Games
                 return NotFound();
             }
 
-            var game =  await _context.Game
+            var game = await _context.Game
                 .Include(g => g.PrimaryMechanic)
                 .Include(g => g.Mechanics)
                 .Include(g => g.Categories)
@@ -81,7 +87,8 @@ namespace BoardGameDB.Pages_Games
 
             MechanicCheckboxes = await _context.Mechanic
                 .OrderBy(m => m.Name)
-                .Select(m => new Checkbox{
+                .Select(m => new Checkbox
+                {
                     Id = m.Id,
                     IsChecked = Game.Mechanics.Contains(m),
                     DisplayName = m.Name
@@ -89,7 +96,8 @@ namespace BoardGameDB.Pages_Games
 
             MechanicPrimaryCheckboxes = await _context.Mechanic
                 .OrderBy(m => m.Name)
-                .Select(m => new Checkbox{
+                .Select(m => new Checkbox
+                {
                     Id = m.Id,
                     IsChecked = m.Id == PrimaryMechanicId,
                     DisplayName = m.Name
@@ -97,7 +105,8 @@ namespace BoardGameDB.Pages_Games
 
             CategoryCheckboxes = await _context.Category
                 .OrderBy(c => c.Name)
-                .Select(gt => new Checkbox{
+                .Select(gt => new Checkbox
+                {
                     Id = gt.Id,
                     IsChecked = Game.Categories.Contains(gt),
                     DisplayName = gt.Name
@@ -105,7 +114,8 @@ namespace BoardGameDB.Pages_Games
 
             PlayStyleCheckboxes = await _context.PlayStyle
                 .OrderBy(ps => ps.Name)
-                .Select(ps => new Checkbox{
+                .Select(ps => new Checkbox
+                {
                     Id = ps.Id,
                     IsChecked = Game.PlayStyles.Contains(ps),
                     DisplayName = ps.Name
@@ -131,13 +141,13 @@ namespace BoardGameDB.Pages_Games
                 UpdateCategories();
                 UpdatePlayStyles();
             }
-            catch(InvalidDataException)
+            catch (InvalidDataException)
             {
                 return Page();
             }
 
             // Updates might have added validation errors
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return Page();
             }
@@ -163,7 +173,7 @@ namespace BoardGameDB.Pages_Games
 
         private bool GameExists(int id)
         {
-          return (_context.Game?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Game?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
         private async void UpdateMechanics()
@@ -180,31 +190,31 @@ namespace BoardGameDB.Pages_Games
             var all = await _context.Mechanic.ToListAsync();
             var toRemove = new List<Mechanic>();
 
-            foreach(var checkbox in MechanicCheckboxes)
+            foreach (var checkbox in MechanicCheckboxes)
             {
                 var mechanicId = checkbox.Id;
                 var mechanic = all.Find(m => m.Id == mechanicId);
 
-                if(mechanic != null)
+                if (mechanic != null)
                 {
-                    if(checkbox.IsChecked == false && existing.Contains(mechanic))
+                    if (checkbox.IsChecked == false && existing.Contains(mechanic))
                     {
                         // Remove
                         toRemove.Add(mechanic);
                     }
-                    else if(checkbox.IsChecked == true && !existing.Contains(mechanic))
+                    else if (checkbox.IsChecked == true && !existing.Contains(mechanic))
                     {
                         // Add
                         Game.Mechanics.Add(mechanic);
                     }
                 }
-            }  
-            foreach(var mechanic in toRemove)
+            }
+            foreach (var mechanic in toRemove)
             {
                 Game.Mechanics.Remove(mechanic);
             }
-            
-            if(PrimaryMechanicId == null)
+
+            if (PrimaryMechanicId == null)
             {
                 ModelState.AddModelError(nameof(PrimaryMechanicId), "You must choose a primary mechanic");
                 return;
@@ -212,7 +222,7 @@ namespace BoardGameDB.Pages_Games
             else
             {
                 var mechanicForPrimaryMechanic = MechanicCheckboxes.First(c => c.Id == PrimaryMechanicId);
-                if(!mechanicForPrimaryMechanic.IsChecked)
+                if (!mechanicForPrimaryMechanic.IsChecked)
                 {
                     ModelState.AddModelError(nameof(PrimaryMechanicId), "Primary mechanic must be one of the selected mechanics");
                     return;
@@ -231,26 +241,26 @@ namespace BoardGameDB.Pages_Games
             var all = await _context.Category.ToListAsync();
             var toRemove = new List<Category>();
 
-            foreach(var checkbox in CategoryCheckboxes)
+            foreach (var checkbox in CategoryCheckboxes)
             {
                 var CategoryId = checkbox.Id;
                 var Category = all.Find(gt => gt.Id == CategoryId);
 
-                if(Category != null)
+                if (Category != null)
                 {
-                    if(checkbox.IsChecked == false && existing.Contains(Category))
+                    if (checkbox.IsChecked == false && existing.Contains(Category))
                     {
                         // Remove
                         toRemove.Add(Category);
                     }
-                    else if(checkbox.IsChecked == true && !existing.Contains(Category))
+                    else if (checkbox.IsChecked == true && !existing.Contains(Category))
                     {
                         // Add
                         Game.Categories.Add(Category);
                     }
                 }
-            }  
-            foreach(var Category in toRemove)
+            }
+            foreach (var Category in toRemove)
             {
                 Game.Categories.Remove(Category);
             }
@@ -264,29 +274,29 @@ namespace BoardGameDB.Pages_Games
             var all = await _context.PlayStyle.ToListAsync();
             var toRemove = new List<PlayStyle>();
 
-            foreach(var checkbox in PlayStyleCheckboxes)
+            foreach (var checkbox in PlayStyleCheckboxes)
             {
                 var playStyleId = checkbox.Id;
                 var playStyle = all.Find(ps => ps.Id == playStyleId);
 
-                if(playStyle != null)
+                if (playStyle != null)
                 {
-                    if(checkbox.IsChecked == false && existing.Contains(playStyle))
+                    if (checkbox.IsChecked == false && existing.Contains(playStyle))
                     {
                         // Remove
                         toRemove.Add(playStyle);
                     }
-                    else if(checkbox.IsChecked == true && !existing.Contains(playStyle))
+                    else if (checkbox.IsChecked == true && !existing.Contains(playStyle))
                     {
                         // Add
                         Game.PlayStyles.Add(playStyle);
                     }
                 }
-            }  
-            foreach(var playStyle in toRemove)
+            }
+            foreach (var playStyle in toRemove)
             {
                 Game.PlayStyles.Remove(playStyle);
             }
         }
-    }   
+    }
 }

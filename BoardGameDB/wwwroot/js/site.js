@@ -19,15 +19,15 @@ function setTabComplete(inputId, suggestionTextId, items, sep) {
         resizeSuggestion(inputElement, suggestionTextElement);
     });
 
-    inputElement.parentElement.addEventListener("click", () => inputElement.focus());
-    suggestionTextElement.addEventListener("click", () => inputElement.focus());
+    inputElement.parentElement.addEventListener("click", () => setCaretPositionToEnd(inputElement));
+    suggestionTextElement.addEventListener("click", () => setCaretPositionToEnd(inputElement));
 
 
     $("body").find("#" + inputId).keydown(evt => {
         var code = evt.code || evt.which;
         // var inputElement = evt.currentTarget;
         if (code == '9' || code == "Tab") {
-            completeSuggestion(inputElement, suggestionTextElement, items)
+            completeSuggestion(inputElement, suggestionTextElement, items, sep)
             resizeSuggestion(inputElement, suggestionTextElement);
             return false;
         }
@@ -84,11 +84,11 @@ function showSuggestion(inputElement, suggestionTextElement, items, sep) {
     suggestionTextElement.innerHTML = suggestion;
 }
 
-function completeSuggestion(inputElement, suggestionTextElement, items) {
+function completeSuggestion(inputElement, suggestionTextElement, items, sep) {
     console.log("completeSuggestion");
     console.log(inputElement.value);
     console.log(suggestionTextElement.innerHTML);
-    inputElement.value += suggestionTextElement.innerHTML;
+    inputElement.value += suggestionTextElement.innerHTML + sep + " ";
     suggestionTextElement.innerHTML = "";
 }
 
@@ -134,4 +134,33 @@ function getCanvasFont(el = document.body) {
     const fontFamily = getCssStyle(el, 'font-family') || 'Times New Roman';
 
     return `${fontWeight} ${fontSize} ${fontFamily}`;
+}
+
+// https://www.vishalon.net/blog/javascript-getting-and-setting-caret-position-in-textarea
+function setCaretPosition(ctrl, start, end) {
+    // IE >= 9 and other browsers
+    if (ctrl.setSelectionRange) {
+        ctrl.focus();
+        ctrl.setSelectionRange(start, end);
+    }
+    // IE < 9 
+    else if (ctrl.createTextRange) {
+        var range = ctrl.createTextRange();
+        range.collapse(true);
+        range.moveEnd('character', end);
+        range.moveStart('character', start);
+        range.select();
+    }
+}
+
+function setCaretPositionToEnd(ctrl) {
+    var position = 0;
+    if(ctrl.value)
+    {
+        position = ctrl.value.length;
+    }
+    else {
+        position = ctrl.innerHTML.length;
+    }
+    setCaretPosition(ctrl, position, position);
 }

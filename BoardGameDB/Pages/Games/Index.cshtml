@@ -39,20 +39,52 @@
             <label class="input-group-text">Mechanics</label>
             <div class="form-control">
                 <input id="filter_mechanics_list" class="bgdb-suggestion-input" type="text"
-                    asp-for="Filter.MechanicsListString" 
-                    autocomplete="off"
-                    placeholder="List of mechanics separated by ';'"/><span id="filter_mechanics_list_suggestion"
+                    asp-for="Filter.MechanicsListString" autocomplete="off"
+                    placeholder="List of mechanics separated by ';'" /><span id="filter_mechanics_list_suggestion"
                     class="bgdb-suggestion-input"></span>
+            </div>
+            <div class="input-group-text">
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.Filter.MechanicsListCombinationOperation, "And", new
+                    {@class="form-check-input", @id="mechanics_list_combination_operation_and"})
+                        <label class="form-check-label" for="mechanics_list_combination_operation_and">And</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.Filter.MechanicsListCombinationOperation, "Or", new
+                    {@class="form-check-input", @id="mechanics_list_combination_operation_or"})
+                    <label class="form-check-label" for="mechanics_list_combination_operation_or">Or</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.Filter.MechanicsListCombinationOperation, "None", new
+                    {@class="form-check-input", @id="mechanics_list_combination_operation_none"})
+                    <label class="form-check-label" for="mechanics_list_combination_operation_none">None</label>
+                </div>
             </div>
         </div>
         <div class="input-group mb-3">
             <label class="input-group-text">Play Styles</label>
             <div class="form-control">
                 <input id="filter_play_styles_list" class="bgdb-suggestion-input" type="text"
-                    asp-for="Filter.PlayStylesListString" 
-                    autocomplete="off"
-                    placeholder="List of play styles separated by ';'"/><span id="filter_play_styles_list_suggestion"
+                    asp-for="Filter.PlayStylesListString" autocomplete="off"
+                    placeholder="List of play styles separated by ';'" /><span id="filter_play_styles_list_suggestion"
                     class="bgdb-suggestion-input"></span>
+            </div>
+            <div class="input-group-text">
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.Filter.PlayStylesCombinationOperation, "And", new
+                    {@class="form-check-input", @id="play_styles_list_combination_operation_and"})
+                        <label class="form-check-label" for="play_styles_list_combination_operation_and">And</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.Filter.PlayStylesCombinationOperation, "Or", new
+                    {@class="form-check-input", @id="play_styles_list_combination_operation_or"})
+                    <label class="form-check-label" for="play_styles_list_combination_operation_or">Or</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(m => m.Filter.PlayStylesCombinationOperation, "None", new
+                    {@class="form-check-input", @id="play_styles_list_combination_operation_none"})
+                    <label class="form-check-label" for="play_styles_list_combination_operation_none">None</label>
+                </div>
             </div>
         </div>
         <div class="input-group mb-3">
@@ -144,7 +176,7 @@
                 </td>
             </tr>
         }
-    </tbody>                
+    </tbody>
 </table>
 
 @section Scripts{

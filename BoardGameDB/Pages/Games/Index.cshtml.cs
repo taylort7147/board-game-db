@@ -120,6 +120,8 @@ namespace BoardGameDB.Pages_Games
                 }
             }
 
+            public string MechanicsListCombinationOperation { get; set; } = "And";
+
             private List<string>? _PlayStylesList;
             public List<string>? PlayStylesList
             {
@@ -142,6 +144,8 @@ namespace BoardGameDB.Pages_Games
                     }
                 }
             }
+
+            public string PlayStylesCombinationOperation { get; set; } = "And";
         }
 
         public IndexModel(BoardGameDB.Data.BoardGameDBContext context)
@@ -246,11 +250,30 @@ namespace BoardGameDB.Pages_Games
                     mechanicsList.RemoveAll(m => m == null);
 
                     // Client-side evaluation
-                    Game = Game
-                        .Intersect(games
-                            .Include(g => g.Mechanics)
-                            .AsEnumerable()
-                            .Where(g => mechanicsList.All(m => g.Mechanics.Contains(m!))));
+                    if (Filter.MechanicsListCombinationOperation == "And")
+                    {
+                        Game = Game
+                            .Intersect(games
+                                .Include(g => g.Mechanics)
+                                .AsEnumerable()
+                                .Where(g => mechanicsList.All(m => g.Mechanics.Contains(m!))));
+                    }
+                    else if (Filter.MechanicsListCombinationOperation == "Or")
+                    {
+                        Game = Game
+                            .Intersect(games
+                                .Include(g => g.Mechanics)
+                                .AsEnumerable()
+                                .Where(g => mechanicsList.Any(m => g.Mechanics.Contains(m!))));
+                    }
+                    else if (Filter.MechanicsListCombinationOperation == "None")
+                    {
+                        Game = Game
+                            .Intersect(games
+                                .Include(g => g.Mechanics)
+                                .AsEnumerable()
+                                .Where(g => !mechanicsList.Any(m => g.Mechanics.Contains(m!))));
+                    }
                 }
 
                 if (Filter.PlayStylesList != null && Filter.PlayStylesList.Count > 0)
@@ -263,11 +286,30 @@ namespace BoardGameDB.Pages_Games
                     playStylesList.RemoveAll(ps => ps == null);
 
                     // Client-side evaluation
-                    Game = Game
-                        .Intersect(games
-                            .Include(g => g.PlayStyles)
-                            .AsEnumerable()
-                            .Where(g => playStylesList.All(ps => g.PlayStyles.Contains(ps!))));
+                    if (Filter.PlayStylesCombinationOperation == "And")
+                    {
+                        Game = Game
+                            .Intersect(games
+                                .Include(g => g.PlayStyles)
+                                .AsEnumerable()
+                                .Where(g => playStylesList.All(ps => g.PlayStyles.Contains(ps!))));
+                    }
+                    else if(Filter.PlayStylesCombinationOperation == "Or")
+                    {
+                        Game = Game
+                            .Intersect(games
+                                .Include(g => g.PlayStyles)
+                                .AsEnumerable()
+                                .Where(g => playStylesList.Any(ps => g.PlayStyles.Contains(ps!))));
+                    }
+                    else if(Filter.PlayStylesCombinationOperation == "None")
+                    {
+                        Game = Game
+                            .Intersect(games
+                                .Include(g => g.PlayStyles)
+                                .AsEnumerable()
+                                .Where(g => !playStylesList.Any(ps => g.PlayStyles.Contains(ps!))));
+                    }
                 }
             }
         }

@@ -106,13 +106,36 @@ namespace BoardGameDB.Pages_Games
 
             public string MechanicsListString
             {
-                get { return _MechanicsList == null ? "" : string.Join(", ", _MechanicsList); }
+                get { return _MechanicsList == null ? "" : string.Join("; ", _MechanicsList); }
                 set
                 {
                     _IsDirty = true;
                     if (value != null)
                     {
                         _MechanicsList = value
+                        .Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                        .Select(s => s.Trim())
+                        .ToList();
+                    }
+                }
+            }
+
+            private List<string>? _PlayStylesList;
+            public List<string>? PlayStylesList
+            {
+                get { return _PlayStylesList; }
+                set { _PlayStylesList = value; }
+            }
+
+            public string PlayStylesListString
+            {
+                get { return _PlayStylesList == null ? "" : string.Join("; ", _PlayStylesList); }
+                set
+                {
+                    _IsDirty = true;
+                    if (value != null)
+                    {
+                        _PlayStylesList = value
                         .Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                         .Select(s => s.Trim())
                         .ToList();
@@ -128,7 +151,7 @@ namespace BoardGameDB.Pages_Games
             ComplexityListItems = ComplexityExtensions.AsEnumerable(includeEmptySelection: true);
         }
 
-        public IList<Game> Game { get; set; } = default!;
+        public IEnumerable<Game> Game { get; set; } = default!;
 
         [BindProperty(SupportsGet = true)]
         public FilterCriteria Filter { get; set; }
@@ -138,10 +161,15 @@ namespace BoardGameDB.Pages_Games
         [BindProperty]
         public List<string> Mechanics { get; set; } = default!;
 
+        [BindProperty]
+        public List<string> PlayStyles { get; set; } = default!;
+
 
         public async Task OnGetAsync()
         {
             Mechanics = await _context.Mechanic.OrderBy(m => m.Name).Select(m => m.Name).ToListAsync();
+            PlayStyles = await _context.PlayStyle.OrderBy(ps => ps.Name).Select(ps => ps.Name).ToListAsync();
+            Game = new List<Game>();
 
             var games = from g in _context.Game
                         select g;
@@ -206,29 +234,42 @@ namespace BoardGameDB.Pages_Games
 
             if (games != null)
             {
+                Game = await games.ToListAsync();
+
                 if (Filter.MechanicsList != null && Filter.MechanicsList.Count > 0)
                 {
                     var mechanicsList = Filter.MechanicsList
                         .Select(ms => _context.Mechanic
                             .Where(m => m.Name.ToLower() == ms.ToLower())
-                            .First())
+                            .FirstOrDefault())
                         .ToList();
+                    mechanicsList.RemoveAll(m => m == null);
 
                     // Client-side evaluation
-                    Game = games
-                        .Include(g => g.Mechanics)
-                        .AsEnumerable()
-                        .Where(g => mechanicsList.All(m => g.Mechanics.Contains(m)))
-                        .ToList();
+                    Game = Game
+                        .Intersect(games
+                            .Include(g => g.Mechanics)
+                            .AsEnumerable()
+                            .Where(g => mechanicsList.All(m => g.Mechanics.Contains(m!))));
                 }
-                else
+
+                if (Filter.PlayStylesList != null && Filter.PlayStylesList.Count > 0)
                 {
-                    Game = await games.ToListAsync();
+                    var playStylesList = Filter.PlayStylesList
+                        .Select(pss => _context.PlayStyle
+                            .Where(ps => ps.Name.ToLower() == pss.ToLower())
+                            .FirstOrDefault())
+                        .ToList();
+                    playStylesList.RemoveAll(ps => ps == null);
+
+                    // Client-side evaluation
+                    Game = Game
+                        .Intersect(games
+                            .Include(g => g.PlayStyles)
+                            .AsEnumerable()
+                            .Where(g => playStylesList.All(ps => g.PlayStyles.Contains(ps!))));
                 }
             }
-
-
-
         }
 
         public async Task OnGetClearFilterAsync()

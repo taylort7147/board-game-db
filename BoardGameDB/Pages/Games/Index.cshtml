@@ -41,15 +41,18 @@
                 <input id="filter_mechanics_list" class="bgdb-suggestion-input" type="text"
                     asp-for="Filter.MechanicsListString" 
                     autocomplete="off"
-                    list="filter_mechanics_list_suggestion_datalist" 
                     placeholder="List of mechanics separated by ';'"/><span id="filter_mechanics_list_suggestion"
                     class="bgdb-suggestion-input"></span>
-                @* <datalist id="filter_mechanics_list_suggestion_datalist">
-                @foreach(var mechanic in Model.Mechanics)
-                {
-                    <option value="@mechanic"></option>
-                }
-                </datalist> *@
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <label class="input-group-text">Play Styles</label>
+            <div class="form-control">
+                <input id="filter_play_styles_list" class="bgdb-suggestion-input" type="text"
+                    asp-for="Filter.PlayStylesListString" 
+                    autocomplete="off"
+                    placeholder="List of play styles separated by ';'"/><span id="filter_play_styles_list_suggestion"
+                    class="bgdb-suggestion-input"></span>
             </div>
         </div>
         <div class="input-group mb-3">
@@ -70,16 +73,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Game[0].Title)
+                @Html.DisplayNameFor(model => model.Game.First().Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Game[0].Location)
+                @Html.DisplayNameFor(model => model.Game.First().Location)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Game[0].PrimaryMechanic)
+                @Html.DisplayNameFor(model => model.Game.First().PrimaryMechanic)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Game[0].Complexity)
+                @Html.DisplayNameFor(model => model.Game.First().Complexity)
             </th>
             <th>
                 Players
@@ -141,7 +144,7 @@
                 </td>
             </tr>
         }
-    </tbody>
+    </tbody>                
 </table>
 
 @section Scripts{
@@ -149,11 +152,9 @@
 <script>
     $(function () {
         var mechanics = @Json.Serialize(Model.Mechanics);
-        @* $("#filter_mechanics_list").autocomplete({
-                source: mechanics,
-                autoFocus: true
-                }); *@
-            setTabComplete("filter_mechanics_list", "filter_mechanics_list_suggestion", mechanics, ";");
+        var playStyles = @Json.Serialize(Model.PlayStyles);
+        setTabComplete("filter_mechanics_list", "filter_mechanics_list_suggestion", mechanics, ";");
+        setTabComplete("filter_play_styles_list", "filter_play_styles_list_suggestion", playStyles, ";");
     });
 </script>
 }

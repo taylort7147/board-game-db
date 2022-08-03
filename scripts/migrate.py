@@ -11,6 +11,7 @@ import sqlite3
 
 root = abspath(join(dirname(__file__), ".."))
 data_file = join(root, "data", "board_game_data.csv")
+connection_string = f"""{join(root, "data", "games.db")}"""
 
 
 # Database classes
@@ -262,7 +263,7 @@ def get_game_id(conn, game):
     game_result = pd.read_sql_query(
         f"SELECT [Id], [Title] FROM [Game] WHERE [Title]=? LIMIT 1", conn, params=(game.title,))
     if(not game_result.empty):
-        return int(game["Id"].iloc[0])
+        return int(game_result["Id"].iloc[0])
 
 
 def try_insert_game(conn, game, mechanic_dict={}, play_style_dict={}, category_dict={}):
@@ -367,8 +368,8 @@ with open(data_file, "r") as fp:
         game.estimated_play_time_group = estimated_play_time
         game.estimated_play_time_raw = int(estimated_play_time_raw) if len(
             estimated_play_time_raw) > 0 else None
-        game.min_play_time or 0
-        game.max_play_time or game.min_play_time
+        game.min_play_time = game.estimated_play_time_raw or 0
+        game.max_play_time = game.estimated_play_time_raw or game.min_play_time
         game.min_players = int(min_players)
         game.max_players = int(max_players)
         game.complexity_raw = float(complexity_raw)
@@ -411,11 +412,6 @@ with open(data_file, "r") as fp:
 # print()
 
 # Add to database
-connection_string = f"""
-    Driver={{SQLite3 ODBC Driver}};
-    Database={join(root, "BoardGameDB", "games.db")};
-"""
-connection_string = f"""{join(root, "BoardGameDB", "games.db")}"""
 # connection_url = URL.create("sqlite+pysqlite", query={"odbc_connect": connection_string})
 # connection_url = f"sqlite:///{join(root, 'BoardGameDB', 'games.db')}"
 

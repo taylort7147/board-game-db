@@ -28,7 +28,9 @@ namespace BoardGameDB.Pages_PlayStyles
                 return NotFound();
             }
 
-            var playstyle = await _context.PlayStyle.FirstOrDefaultAsync(m => m.Id == id);
+            var playstyle = await _context.PlayStyle
+                .Include(ps => ps.Games.OrderBy(g => g.Title))
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (playstyle == null)
             {
                 return NotFound();

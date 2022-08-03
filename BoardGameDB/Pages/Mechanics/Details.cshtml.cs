@@ -19,7 +19,7 @@ namespace BoardGameDB.Pages_Mechanics
             _context = context;
         }
 
-      public Mechanic Mechanic { get; set; } = default!; 
+        public Mechanic Mechanic { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,12 +28,14 @@ namespace BoardGameDB.Pages_Mechanics
                 return NotFound();
             }
 
-            var mechanic = await _context.Mechanic.FirstOrDefaultAsync(m => m.Id == id);
+            var mechanic = await _context.Mechanic
+                .Include(m => m.Games.OrderBy(g => g.Title))
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (mechanic == null)
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Mechanic = mechanic;
             }

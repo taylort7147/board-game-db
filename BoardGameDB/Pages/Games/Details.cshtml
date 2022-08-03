@@ -40,7 +40,7 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Game.MinimumPlayerCount)
-            @if(Model.Game.MinimumPlayerCount != Model.Game.MaximumPlayerCount)
+            @if (Model.Game.MinimumPlayerCount != Model.Game.MaximumPlayerCount)
             {
                 <span>-</span>
                 @Html.DisplayFor(model => model.Game.MaximumPlayerCount)
@@ -51,15 +51,15 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Game.MinimumPlayTimeMinutes)
-            @if(Model.Game.MinimumPlayTimeMinutes == Model.Game.MaximumPlayTimeMinutes)
+            @if (Model.Game.MinimumPlayTimeMinutes == Model.Game.MaximumPlayTimeMinutes)
             {
             }
             else
             {
                 <span>-</span>
                 @Html.DisplayFor(modelItem => Model.Game.MaximumPlayTimeMinutes)
-            }            
-            @if(Model.Game.MaximumPlayTimeMinutes == 1)
+            }
+            @if (Model.Game.MaximumPlayTimeMinutes == 1)
             {
                 <span>Minute</span>
             }
@@ -92,31 +92,37 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Game.BoardGameGeekId)
         </dd>
+        <hr />
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Game.Mechanics)
         </dt>
         <dd class="col-sm-10">
-            @foreach(var mechanic in @Model.Game.Mechanics)
+            @foreach (var mechanic in @Model.Game.Mechanics)
             {
-            <a class="btn btn-secondary" asp-page="/Mechanics/Details" asp-route-id="@mechanic.Id">@mechanic.Name</a>
+                <a class="btn btn-outline-primary mb-1" asp-page="/Mechanics/Details"
+                asp-route-id="@mechanic.Id">@mechanic.Name</a>
             }
         </dd>
+        <hr />
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Game.Categories)
         </dt>
         <dd class="col-sm-10">
-            @foreach(var Category in @Model.Game.Categories)
+            @foreach (var Category in @Model.Game.Categories)
             {
-            <a class="btn btn-secondary" asp-page="/Categories/Details" asp-route-id="@Category.Id">@Category.Name</a>
+                <a class="btn btn-outline-primary mb-1" asp-page="/Categories/Details"
+                asp-route-id="@Category.Id">@Category.Name</a>
             }
         </dd>
+        <hr />
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Game.PlayStyles)
         </dt>
         <dd class="col-sm-10">
-            @foreach(var playStyle in @Model.Game.PlayStyles)
+            @foreach (var playStyle in @Model.Game.PlayStyles)
             {
-            <a class="btn btn-secondary" asp-page="/PlayStyles/Details" asp-route-id="@playStyle.Id">@playStyle.Name</a>
+                <a class="btn btn-outline-primary mb-1" asp-page="/PlayStyles/Details"
+                asp-route-id="@playStyle.Id">@playStyle.Name</a>
             }
         </dd>
     </dl>

@@ -19,7 +19,7 @@ namespace BoardGameDB.Pages_Categories
             _context = context;
         }
 
-      public Category Category { get; set; } = default!; 
+      public Category Category { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,7 +28,9 @@ namespace BoardGameDB.Pages_Categories
                 return NotFound();
             }
 
-            var category = await _context.Category.FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _context.Category
+                .Include(c => c.Games.OrderBy(g => g.Title))
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();

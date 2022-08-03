@@ -29,9 +29,9 @@ namespace BoardGameDB.Pages_Games
             }
 
             var game = await _context.Game
-                .Include(g => g.Mechanics)
-                .Include(g => g.Categories)
-                .Include(g => g.PlayStyles)
+                .Include(g => g.Mechanics.OrderBy(m => m.Name))
+                .Include(g => g.Categories.OrderBy(c => c.Name))
+                .Include(g => g.PlayStyles.OrderBy(ps => ps.Name))
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (game == null)
             {

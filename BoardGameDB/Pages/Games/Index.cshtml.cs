@@ -29,7 +29,7 @@ namespace BoardGameDB.Pages_Games
                 _MechanicsList = new List<string>();
             }
 
-            private bool _IsDirty = false;
+            private bool _IsDirty = true;
             public bool IsDirty
             {
                 get { return _IsDirty; }

@@ -47,7 +47,7 @@
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.Filter.MechanicsListCombinationOperation, "And", new
                     {@class="form-check-input", @id="mechanics_list_combination_operation_and"})
-                        <label class="form-check-label" for="mechanics_list_combination_operation_and">And</label>
+                    <label class="form-check-label" for="mechanics_list_combination_operation_and">And</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.Filter.MechanicsListCombinationOperation, "Or", new
@@ -73,7 +73,7 @@
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.Filter.PlayStylesCombinationOperation, "And", new
                     {@class="form-check-input", @id="play_styles_list_combination_operation_and"})
-                        <label class="form-check-label" for="play_styles_list_combination_operation_and">And</label>
+                    <label class="form-check-label" for="play_styles_list_combination_operation_and">And</label>
                 </div>
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.Filter.PlayStylesCombinationOperation, "Or", new
@@ -132,6 +132,10 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
+                    @if (!string.IsNullOrEmpty(item.PictureUrl))
+                    {
+                        <img class="bgdb-thumbnail" src="@item.PictureUrl" />
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Location)

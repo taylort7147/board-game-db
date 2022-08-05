@@ -155,12 +155,45 @@ function setCaretPosition(ctrl, start, end) {
 
 function setCaretPositionToEnd(ctrl) {
     var position = 0;
-    if(ctrl.value)
-    {
+    if (ctrl.value) {
         position = ctrl.value.length;
     }
     else {
         position = ctrl.innerHTML.length;
     }
     setCaretPosition(ctrl, position, position);
+}
+
+
+/**
+ * Sets up a filter list where the list elements whose text does not contain 
+ * the input text are hidden.
+ * 
+ * @param {*} inputId The ID of the input element
+ * @param {*} nodes An array-like list of nodes to filter
+ * @param {*} nodeTextGetter A function to call on each node to retreive its text
+ */
+function setFilterList(inputId, nodes, nodeTextGetter) {
+    var inputElement = document.getElementById(inputId);
+    inputElement.addEventListener("keyup", () => filterList(inputElement.value, nodes, nodeTextGetter));
+}
+
+/**
+ * Performs filtering on a list (see setFilterList).
+ * 
+ * @param {*} text The text to use for filtering
+ * @param {*} nodes An array-like list of nodes to filter
+ * @param {*} nodeTextGetter A function to call on each node to retreive its text
+ */
+function filterList(text, nodes, nodeTextGetter) {
+    var text = text.toLowerCase();
+    Array.from(nodes).forEach(child => {
+        var childText = nodeTextGetter(child).toLowerCase();
+        if (childText.includes(text)) {
+            child.classList.remove("bgdb-hidden");
+        }
+        else {
+            child.classList.add("bgdb-hidden");
+        }
+    });
 }

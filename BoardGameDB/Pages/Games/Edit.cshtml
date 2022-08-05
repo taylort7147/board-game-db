@@ -64,114 +64,180 @@
                 <input asp-for="Game.RulesVideoUrl" class="form-control" />
                 <span asp-validation-for="Game.RulesVideoUrl" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="Game.BoardGameGeekId" class="control-label"></label>
                 <input asp-for="Game.BoardGameGeekId" class="form-control" />
                 <span asp-validation-for="Game.BoardGameGeekId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <div>
-                    @Html.LabelFor(m => m.Game.Mechanics)
-                    @Html.HiddenFor(m => m.Game.Mechanics)
-                    @Html.HiddenFor(m => m.Game.PrimaryMechanic.Id)
-                    @Html.HiddenFor(m => m.Game.PrimaryMechanic.Name)
-                    @Html.HiddenFor(m => m.Game.PrimaryMechanic.Games)
-                    <div>
-                        <span asp-validation-for="PrimaryMechanicId" class="text-danger"></span>
+            <div class="accordion mb-3" id="accordion_container">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="mechanic_accordion_heading">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#mechanic_collapse_content" aria-expanded="true"
+                            aria-controls="mechanic_collapse_content">
+                            @Html.LabelFor(m => m.Game.Mechanics)
+                        </button>
+                    </h2>
+                    <div id="mechanic_collapse_content" class="accordion-collapse collapse"
+                        aria-labelledby="mechanic_accordion_heading" data-bs-parent="#accordion_container">
+                        <div class="accordion-body">
+                            <div class="form-group">
+                                <div>
+                                    @Html.HiddenFor(m => m.Game.Mechanics)
+                                    @Html.HiddenFor(m => m.Game.PrimaryMechanic.Id)
+                                    @Html.HiddenFor(m => m.Game.PrimaryMechanic.Name)
+                                    @Html.HiddenFor(m => m.Game.PrimaryMechanic.Games)
+                                    <div>
+                                        <span asp-validation-for="PrimaryMechanicId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <input id="mechanic_filter_list_input" class="form-control" placeholder="Filter" />
+                                <div class="form-check bgdb-checkbox-group">
+                                    <table>
+                                        <tbody id="mechanic_filter_list">
+                                            @for (var index = 0; index < Model.MechanicCheckboxes.Count(); ++index)
+                                            {
+                                                <tr class="mb-2">
+                                                    @Html.HiddenFor(m => m.MechanicCheckboxes[index].Id)
+                                                    @Html.HiddenFor(m => m.MechanicCheckboxes[index].DisplayName)
+                                                    @Html.HiddenFor(m => m.MechanicPrimaryCheckboxes[index].Id)
+                                                    @Html.HiddenFor(m => m.MechanicPrimaryCheckboxes[index].DisplayName)
+                                                    @{
+                                                        var checkboxId = "mechanic_checkbox_" +
+                Model.MechanicCheckboxes[index].Id.ToString();
+                                                        var radioId = "mechanic_radio_" +
+                                                        Model.MechanicCheckboxes[index].Id.ToString();
+
+                                                        <td>
+                                                            <input class="form-check-input" id="@checkboxId" type="checkbox"
+                                                        asp-for="MechanicCheckboxes[index].IsChecked" />
+                                                            <label class="form-check-label"
+                                                            for="@checkboxId">@Model.MechanicCheckboxes[index].DisplayName</label>
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-check-input btn-check" id="@radioId" type="radio"
+                                                        checked="@Model.MechanicPrimaryCheckboxes[index].IsChecked"
+                                                        autocomplete="off"
+                                                        value="@Model.MechanicPrimaryCheckboxes[index].Id"
+                                                        asp-for="PrimaryMechanicId">
+                                                            <label class="btn btn-outline-primary btn-sm bgdb-btn-toggle"
+                                                            for="@radioId">
+                                                                <span class="bgdb-toggle-on">Primary</span>
+                                                                <span class="bgdb-toggle-off">Set Primary</span>
+                                                            </label>
+                                                        </td>
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
-                <div class="form-check bgdb-checkbox-group">
-
-                    <table>
-                        @{
-                        }
-                        @for (var index = 0; index < Model.MechanicCheckboxes.Count(); ++index)
-                        {
-                            <tr class="mb-2">
-                                @Html.HiddenFor(m => m.MechanicCheckboxes[index].Id)
-                                @Html.HiddenFor(m => m.MechanicCheckboxes[index].DisplayName)
-                                @Html.HiddenFor(m => m.MechanicPrimaryCheckboxes[index].Id)
-                                @Html.HiddenFor(m => m.MechanicPrimaryCheckboxes[index].DisplayName)
-                                @{
-                                    var checkboxId = "mechanic_checkbox_" + Model.MechanicCheckboxes[index].Id.ToString();
-                                    var radioId = "mechanic_radio_" + Model.MechanicCheckboxes[index].Id.ToString();
-
-                                    <td>
-                                        <input class="form-check-input" id="@checkboxId" type="checkbox"
-                                    asp-for="MechanicCheckboxes[index].IsChecked" />
-                                        <label class="form-check-label"
-                                        for="@checkboxId">@Model.MechanicCheckboxes[index].DisplayName</label>
-                                    </td>
-                                    <td>
-                                        <input class="form-check-input btn-check" id="@radioId" type="radio"
-                                    checked="@Model.MechanicPrimaryCheckboxes[index].IsChecked" autocomplete="off"
-                                    value="@Model.MechanicPrimaryCheckboxes[index].Id" asp-for="PrimaryMechanicId">
-                                        <label class="btn btn-outline-primary btn-sm bgdb-btn-toggle" for="@radioId">
-                                            <span class="bgdb-toggle-on">Primary</span>
-                                            <span class="bgdb-toggle-off">Set Primary</span>
-                                        </label>
-                                    </td>
-                                }
-                            </tr>
-                        }
-                    </table>
-                </div>
-            </div>
-            <div class="form-group">
-                <div>
-                    @Html.LabelFor(m => m.Game.Categories)
-                    @Html.HiddenFor(m => m.Game.Categories)
-                </div>
-                <div class="form-check bgdb-checkbox-group">
-                    @for (var index = 0; index < Model.CategoryCheckboxes.Count(); ++index)
-                    {
-                        <div>
-                            @Html.HiddenFor(m => m.CategoryCheckboxes[index].Id)
-                            @Html.HiddenFor(m => m.CategoryCheckboxes[index].DisplayName)
-                            @{
-                                var id = "game_type_checkbox_" + Model.CategoryCheckboxes[index].Id.ToString();
-                                <input class="form-check-input" id="@id" type="checkbox"
-                            asp-for="@Model.CategoryCheckboxes[index].IsChecked" />
-                                <label class="form-check-label" for="@id">@Model.CategoryCheckboxes[index].DisplayName</label>
-                            }
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="category_accordion_header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#category_collapse_content" aria-expanded="true"
+                            aria-controls="category_collapse_content">
+                            @Html.LabelFor(m => m.Game.Categories)
+                        </button>
+                    </h2>
+                    <div id="category_collapse_content" class="accordion-collapse collapse"
+                        aria-labelledby="category_accordion_header" data-bs-parent="#accordion_container">
+                        <div class="accordion-body">
+                            <div class="form-group">
+                                <div>
+                                    @Html.HiddenFor(m => m.Game.Categories)
+                                </div>
+                                <input id="category_filter_list_input" class="form-control" placeholder="Filter" />
+                                <div id="category_filter_list" class="form-check bgdb-checkbox-group">
+                                    @for (var index = 0; index < Model.CategoryCheckboxes.Count(); ++index)
+                                    {
+                                        <div>
+                                            @Html.HiddenFor(m => m.CategoryCheckboxes[index].Id)
+                                            @Html.HiddenFor(m => m.CategoryCheckboxes[index].DisplayName)
+                                            @{
+                                                var id = "game_type_checkbox_" + Model.CategoryCheckboxes[index].Id.ToString();
+                                                <input class="form-check-input" id="@id" type="checkbox"
+                                            asp-for="@Model.CategoryCheckboxes[index].IsChecked" />
+                                                <label class="form-check-label"
+                                                for="@id">@Model.CategoryCheckboxes[index].DisplayName</label>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
                         </div>
-                    }
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div>
-                    @Html.LabelFor(m => m.Game.PlayStyles)
-                    @Html.HiddenFor(m => m.Game.PlayStyles)
-                </div>
-                <div class="form-check bgdb-checkbox-group">
-                    @for (var index = 0; index < Model.PlayStyleCheckboxes.Count(); ++index)
-                    {
-                        <div>
-                            @Html.HiddenFor(m => m.PlayStyleCheckboxes[index].Id)
-                            @Html.HiddenFor(m => m.PlayStyleCheckboxes[index].DisplayName)
-                            @{
-                                var id = "play_style_checkbox_" + Model.PlayStyleCheckboxes[index].Id.ToString();
-                                <input class="form-check-input" id="@id" type="checkbox"
-                            asp-for="@Model.PlayStyleCheckboxes[index].IsChecked" />
-                                <label class="form-check-label" for="@id">@Model.PlayStyleCheckboxes[index].DisplayName</label>
-                            }
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="play_style_accordion_header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#play_style_collapse_content" aria-expanded="true"
+                            aria-controls="play_style_collapse_content">
+                            @Html.LabelFor(m => m.Game.PlayStyles)
+                        </button>
+                    </h2>
+                    <div id="play_style_collapse_content" class="accordion-collapse collapse"
+                        aria-labelledby="play_style_accordion_header" data-bs-parent="#accordion_container">
+                        <div class="accordion-body">
+                            <div class="form-group">
+                                <div>
+                                    @Html.HiddenFor(m => m.Game.PlayStyles)
+                                </div>
+                                <input id="play_style_filter_list_input" class="form-control" placeholder="Filter" />
+                                <div id="play_style_filter_list" class="form-check bgdb-checkbox-group">
+                                    @for (var index = 0; index < Model.PlayStyleCheckboxes.Count(); ++index)
+                                    {
+                                        <div>
+                                            @Html.HiddenFor(m => m.PlayStyleCheckboxes[index].Id)
+                                            @Html.HiddenFor(m => m.PlayStyleCheckboxes[index].DisplayName)
+                                            @{
+                                                var id = "play_style_checkbox_" +
+                Model.PlayStyleCheckboxes[index].Id.ToString();
+                                                <input class="form-check-input" id="@id" type="checkbox"
+                                            asp-for="@Model.PlayStyleCheckboxes[index].IsChecked" />
+                                                <label class="form-check-label"
+                                                for="@id">@Model.PlayStyleCheckboxes[index].DisplayName</label>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
                         </div>
-                    }
+                    </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
+    <div>
+        <a asp-page="./Index">Back to List</a>
+    </div>
 
-@section Scripts {
-@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(function () {
+            // Set up filter lists
+            setFilterList("mechanic_filter_list_input",
+                document.getElementById("mechanic_filter_list").getElementsByTagName("tr"),
+                child => child.getElementsByTagName("td")[0].getElementsByTagName("label")[0].innerHTML
+            );
+            setFilterList("category_filter_list_input",
+                document.getElementById("category_filter_list").getElementsByTagName("div"),
+                child => child.getElementsByTagName("label")[0].innerHTML
+            );
+            setFilterList("play_style_filter_list_input",
+                document.getElementById("play_style_filter_list").getElementsByTagName("div"),
+                child => child.getElementsByTagName("label")[0].innerHTML
+            );
+        });
+    </script>
+    }

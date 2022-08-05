@@ -86,3 +86,8 @@ span.bgdb-suggestion-input {
     display: block;
   }
 }
+
+.bgdb-hidden
+{
+  display: none;
+}

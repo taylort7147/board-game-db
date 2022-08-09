@@ -13,6 +13,9 @@ builder.Services.AddDbContext<BoardGameDB.Data.BoardGameDBContext>(
     options => options.UseSqlite(connectionString)
 );
 
+builder.Services.AddMvc();
+builder.Services.AddControllersWithViews();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,11 +35,17 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
-app.MapRazorPages();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Games}/{action=Index}/{id?}");
+    endpoints.MapControllerRoute(
+        name: "api",
+        pattern: "api/{controller=Games}/{action=Index}/{id?}");
+});
 
 app.Run();

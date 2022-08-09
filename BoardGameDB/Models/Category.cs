@@ -12,6 +12,7 @@ namespace BoardGameDB.Models
         [StringLength(128)]
         public string Name { get; set; } = string.Empty;
 
+        [JsonIgnore]
         public ICollection<Game> Games { get; set; } = default!;
     }
 }

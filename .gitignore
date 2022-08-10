@@ -4,7 +4,12 @@
 **/bin/
 *.swp
 **/*.db*
+BoardGameDB/wwwroot/js/react/
+*.lock
 
 # Docker
 docker-compose.yml
+
+# Node.js
+**/node_modules/
 

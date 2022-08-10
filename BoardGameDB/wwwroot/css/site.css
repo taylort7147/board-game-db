@@ -53,15 +53,18 @@ body {
   text-transform: uppercase;
 }
 
+.bgdb-tab-complete-input-group input,
 input.bgdb-suggestion-input {
   margin: auto 0;
 }
 
+.bgdb-tab-complete-input-group span,
 span.bgdb-suggestion-input {
   color: var(--bgdb-suggestion-color);
 }
 
-
+.bgdb-tab-complete-input-group  input,
+.bgdb-tab-complete-input-group span,
 input.bgdb-suggestion-input,
 span.bgdb-suggestion-input {
   display: inline-block;

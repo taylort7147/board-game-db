@@ -36,13 +36,12 @@
                 asp-items="Model.Filter.PlayTimeRangeListItems"></select>
         </div>
         <div class="input-group mb-3">
+            <label class="input-group-text">Test Mechanics</label>
+            <div id="test_mechanics_input" class="form-control"></div>
+        </div>
+        <div class="input-group mb-3">
             <label class="input-group-text">Mechanics</label>
-            <div class="form-control">
-                <input id="filter_mechanics_list" class="bgdb-suggestion-input" type="text"
-                    asp-for="Filter.MechanicsListString" autocomplete="off"
-                    placeholder="List of mechanics separated by ';'" /><span id="filter_mechanics_list_suggestion"
-                    class="bgdb-suggestion-input"></span>
-            </div>
+            <div id="filter_mechanics_input" class="form-control"></div>
             <div class="input-group-text">
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.Filter.MechanicsListCombinationOperation, "And", new
@@ -63,12 +62,7 @@
         </div>
         <div class="input-group mb-3">
             <label class="input-group-text">Play Styles</label>
-            <div class="form-control">
-                <input id="filter_play_styles_list" class="bgdb-suggestion-input" type="text"
-                    asp-for="Filter.PlayStylesListString" autocomplete="off"
-                    placeholder="List of play styles separated by ';'" /><span id="filter_play_styles_list_suggestion"
-                    class="bgdb-suggestion-input"></span>
-            </div>
+            <div id="filter_play_styles_input" class="form-control"></div>
             <div class="input-group-text">
                 <div class="form-check form-check-inline">
                     @Html.RadioButtonFor(m => m.Filter.PlayStylesCombinationOperation, "And", new
@@ -184,13 +178,25 @@
 </table>
 
 @section Scripts{
+<script type="module">
+    import TabCompleteInput from "/js/react/tab_complete.js";
 
-<script>
     $(function () {
-        var mechanics = @Json.Serialize(Model.Mechanics);
-        var playStyles = @Json.Serialize(Model.PlayStyles);
-        setTabComplete("filter_mechanics_list", "filter_mechanics_list_suggestion", mechanics, ";");
-        setTabComplete("filter_play_styles_list", "filter_play_styles_list_suggestion", playStyles, ";");
+        ReactDOM.createRoot(document.getElementById("filter_mechanics_input"))
+            .render(React.createElement(TabCompleteInput, {
+                suggestions: @Json.Serialize(Model.Mechanics),
+                sep: ";",
+                name: "Filter.MechanicsListString",
+                value: "@Model.Filter.MechanicsListString"
+            }));
+
+        ReactDOM.createRoot(document.getElementById("filter_play_styles_input"))
+            .render(React.createElement(TabCompleteInput, {
+                suggestions: @Json.Serialize(Model.PlayStyles),
+                sep: ";",
+                name: "Filter.PlayStylesListString",
+                value: "@Model.Filter.PlayStylesListString"
+            }));
     });
 </script>
 }

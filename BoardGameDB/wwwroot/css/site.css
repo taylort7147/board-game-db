@@ -1,9 +1,9 @@
 :root {
   --bgdb-suggestion-color: #999;
-  --bgdb-card-background-color-primary: rgb(229, 229, 229);
-  --bgdb-card-color-primary: black;
-  --bgdb-card-background-color-secondary: rgb(68, 68, 68);
-  --bgdb-card-color-secondary: rgb(229, 229, 229);
+  --bgdb-card-background-color-primary: var(--bs-light);
+  --bgdb-card-color-primary: var(--bs-indigo);
+  --bgdb-card-background-color-secondary: var(--bs-indigo);
+  --bgdb-card-color-secondary: var(--bs-light);
 }
 
 html {
@@ -126,6 +126,7 @@ span.bgdb-suggestion-input {
   font-size: 20px;
   margin: 0;
   width: auto;
+  min-width: 120px;
   padding: 10px;
   background-color: var(--bgdb-card-background-color-secondary);
   color: var(--bgdb-card-color-secondary);

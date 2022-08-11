@@ -4,7 +4,7 @@
   --bgdb-card-color-primary: var(--bs-dark);
   --bgdb-card-background-color-secondary: var(--bs-dark);
   --bgdb-card-color-secondary: var(--bs-light);
-  --bgdb-complexity-1-color: green;
+  --bgdb-complexity-1-color: rgb(50, 255, 50);
   --bgdb-complexity-2-color: yellow;
   --bgdb-complexity-3-color: orange;
   --bgdb-complexity-4-color: red;

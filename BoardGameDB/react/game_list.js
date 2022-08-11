@@ -1,7 +1,8 @@
 'use strict';
 
 function GameList(props) {
-    var games = props;
+    var games = props.games;
+    var onGameSelected = props.onGameSelected;
     var gameNodes = [];
     for (var key in games) {
         var g = games[key];
@@ -9,7 +10,9 @@ function GameList(props) {
             <li className="bgdb-list-item" key={g.id}>
                 <Game
                     key={g.id}
-                    game={g}></Game>
+                    game={g}
+                    onGameSelected={onGameSelected}>
+                </Game>
             </li>
         );
     }
@@ -33,8 +36,10 @@ function formatPlayerRange(min, max) {
 
 function Game(props) {
     var g = props.game;
-    var complexityClass = "bgdb-complexity-" + Math.min(5, Math.max(1,Math.floor(g.complexity)));
-    return <div className="card bgdb-card mb-3">
+    var onClick = (evt) => props.onGameSelected(g.id);
+    var complexityClass = "bgdb-complexity-" + Math.min(5, Math.max(1, Math.floor(g.complexity)));
+    return <div className="card bgdb-card mb-3"
+        onClick={onClick}>
         <div className="row bgdb-row g-0">
             <div className="col">
                 <div className="card-body bgdb-card-body">

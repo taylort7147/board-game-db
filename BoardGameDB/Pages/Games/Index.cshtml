@@ -122,7 +122,10 @@
             }));
 
         ReactDOM.createRoot(document.getElementById("game_list"))
-            .render(React.createElement(GameList, @Json.Serialize(Model.Game)));
+            .render(React.createElement(GameList, {
+                games: @Json.Serialize(Model.Game),
+                onGameSelected: id => window.location.assign(`/Games/Details?id=${id}`)
+            }));
     });
 </script>
 }

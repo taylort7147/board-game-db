@@ -1,9 +1,14 @@
 :root {
   --bgdb-suggestion-color: #999;
   --bgdb-card-background-color-primary: var(--bs-light);
-  --bgdb-card-color-primary: var(--bs-indigo);
-  --bgdb-card-background-color-secondary: var(--bs-indigo);
+  --bgdb-card-color-primary: var(--bs-dark);
+  --bgdb-card-background-color-secondary: var(--bs-dark);
   --bgdb-card-color-secondary: var(--bs-light);
+  --bgdb-complexity-1-color: green;
+  --bgdb-complexity-2-color: yellow;
+  --bgdb-complexity-3-color: orange;
+  --bgdb-complexity-4-color: red;
+  --bgdb-complexity-5-color: darkred;
 }
 
 html {
@@ -150,4 +155,29 @@ span.bgdb-suggestion-input {
 
 .bgdb-image-container img {
   margin: auto;
+}
+
+.bgdb-complexity-1 {
+  font-weight: bold;
+  color: var(--bgdb-complexity-1-color);
+}
+
+.bgdb-complexity-2 {
+  font-weight: bold;
+  color: var(--bgdb-complexity-2-color);
+}
+
+.bgdb-complexity-3 {
+  font-weight: bold;
+  color: var(--bgdb-complexity-3-color);
+}
+
+.bgdb-complexity-4 {
+  font-weight: bold;
+  color: var(--bgdb-complexity-4-color);
+}
+
+.bgdb-complexity-5 {
+  font-weight: bold;
+  color: var(--bgdb-complexity-5-color);
 }

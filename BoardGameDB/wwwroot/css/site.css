@@ -181,3 +181,7 @@ span.bgdb-suggestion-input {
   font-weight: bold;
   color: var(--bgdb-complexity-5-color);
 }
+
+.bgdb-game-list {
+  padding-left: unset;
+}

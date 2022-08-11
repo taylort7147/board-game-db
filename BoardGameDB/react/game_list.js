@@ -16,7 +16,7 @@ function GameList(props) {
             </li>
         );
     }
-    return <ul>
+    return <ul className="bgdb-game-list">
         {gameNodes}
     </ul>;
 }

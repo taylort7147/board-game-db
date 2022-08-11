@@ -5,95 +5,93 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
 <p>
-    <a class="btn btn-primary bgdb-center" asp-page="Create">Create New</a>
+    <a class="btn btn-dark" data-bs-toggle="collapse" href="#filter_box" role="button" aria-expanded="false"
+        aria-controls="filter_box">Filter</a>
+    <a class="btn btn-dark" asp-page="Create">Create New</a>
 </p>
 
-@{
+@* @{
     var filterDisplay = Model.Filter.IsDirty ? "block" : "none";
     var filterPromptDisplay = Model.Filter.IsDirty ? "none" : "block";
-}
-<div id="filter-box" class="bgdb-form-container" style="display: @filterDisplay">
-    <form>
-        <div class="input-group mb-3">
-            <label class="input-group-text">Title</label>
-            <input class="form-control" type="text" asp-for="Filter.Title" />
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text">Complexity</span>
-            <select class="form-control bgdb-min" asp-for="Filter.ComplexityString"
-                asp-items="@Model.ComplexityListItems"></select>
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text">Player Count</span>
-            <input class="form-control bgdb-min" type="number" asp-for="Filter.PlayerCount" />
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text">Play Time</span>
-            <select class="form-control bgdb-min" type="number" asp-for="Filter.PlayTimeRangeString"
-                asp-items="Model.Filter.PlayTimeRangeListItems"></select>
-        </div>
-        <div class="input-group mb-3">
-            <label class="input-group-text">Test Mechanics</label>
-            <div id="test_mechanics_input" class="form-control"></div>
-        </div>
-        <div class="input-group mb-3">
-            <label class="input-group-text">Mechanics</label>
-            <div id="filter_mechanics_input" class="form-control"></div>
-            <div class="input-group-text">
-                <div class="form-check form-check-inline">
-                    @Html.RadioButtonFor(m => m.Filter.MechanicsListCombinationOperation, "And", new
-                    {@class="form-check-input", @id="mechanics_list_combination_operation_and"})
-                    <label class="form-check-label" for="mechanics_list_combination_operation_and">And</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    @Html.RadioButtonFor(m => m.Filter.MechanicsListCombinationOperation, "Or", new
-                    {@class="form-check-input", @id="mechanics_list_combination_operation_or"})
-                    <label class="form-check-label" for="mechanics_list_combination_operation_or">Or</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    @Html.RadioButtonFor(m => m.Filter.MechanicsListCombinationOperation, "None", new
-                    {@class="form-check-input", @id="mechanics_list_combination_operation_none"})
-                    <label class="form-check-label" for="mechanics_list_combination_operation_none">None</label>
-                </div>
-            </div>
-        </div>
-        <div class="input-group mb-3">
-            <label class="input-group-text">Play Styles</label>
-            <div id="filter_play_styles_input" class="form-control"></div>
-            <div class="input-group-text">
-                <div class="form-check form-check-inline">
-                    @Html.RadioButtonFor(m => m.Filter.PlayStylesCombinationOperation, "And", new
-                    {@class="form-check-input", @id="play_styles_list_combination_operation_and"})
-                    <label class="form-check-label" for="play_styles_list_combination_operation_and">And</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    @Html.RadioButtonFor(m => m.Filter.PlayStylesCombinationOperation, "Or", new
-                    {@class="form-check-input", @id="play_styles_list_combination_operation_or"})
-                    <label class="form-check-label" for="play_styles_list_combination_operation_or">Or</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    @Html.RadioButtonFor(m => m.Filter.PlayStylesCombinationOperation, "None", new
-                    {@class="form-check-input", @id="play_styles_list_combination_operation_none"})
-                    <label class="form-check-label" for="play_styles_list_combination_operation_none">None</label>
-                </div>
-            </div>
-        </div>
-        <div class="input-group mb-3">
-            <input class="form-control btn btn-outline-primary" type="submit" value="Filter" />
-        </div>
-    </form>
-    <form>
-        <button class="form-control btn btn-outline-secondary" asp-page="./Index"
-            asp-page-handler="ClearFilter">Clear</button>
-    </form>
-</div>
+    } *@
 
-<div style="display: @filterPromptDisplay">
-    <button class="btn btn-outline-primary"
-        onclick="document.getElementById('filter-box').style.display='block'; this.style.display='none'">Filter...</button>
+<div id="filter_box" class="collapse mb-3">
+    <div class="card card-body">
+        <form>
+            <div class="input-group mb-3">
+                <label class="input-group-text">Title</label>
+                <input class="form-control" type="text" asp-for="Filter.Title" />
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Complexity</span>
+                <select class="form-control bgdb-min" asp-for="Filter.ComplexityString"
+                    asp-items="@Model.ComplexityListItems"></select>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Player Count</span>
+                <input class="form-control bgdb-min" type="number" asp-for="Filter.PlayerCount" />
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Play Time</span>
+                <select class="form-control bgdb-min" type="number" asp-for="Filter.PlayTimeRangeString"
+                    asp-items="Model.Filter.PlayTimeRangeListItems"></select>
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text">Test Mechanics</label>
+                <div id="test_mechanics_input" class="form-control"></div>
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text">Mechanics</label>
+                <div id="filter_mechanics_input" class="form-control"></div>
+                <div class="input-group-text">
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(m => m.Filter.MechanicsListCombinationOperation, "And", new
+                        {@class="form-check-input", @id="mechanics_list_combination_operation_and"})
+                        <label class="form-check-label" for="mechanics_list_combination_operation_and">And</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(m => m.Filter.MechanicsListCombinationOperation, "Or", new
+                        {@class="form-check-input", @id="mechanics_list_combination_operation_or"})
+                        <label class="form-check-label" for="mechanics_list_combination_operation_or">Or</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(m => m.Filter.MechanicsListCombinationOperation, "None", new
+                        {@class="form-check-input", @id="mechanics_list_combination_operation_none"})
+                        <label class="form-check-label" for="mechanics_list_combination_operation_none">None</label>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text">Play Styles</label>
+                <div id="filter_play_styles_input" class="form-control"></div>
+                <div class="input-group-text">
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(m => m.Filter.PlayStylesCombinationOperation, "And", new
+                        {@class="form-check-input", @id="play_styles_list_combination_operation_and"})
+                        <label class="form-check-label" for="play_styles_list_combination_operation_and">And</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(m => m.Filter.PlayStylesCombinationOperation, "Or", new
+                        {@class="form-check-input", @id="play_styles_list_combination_operation_or"})
+                        <label class="form-check-label" for="play_styles_list_combination_operation_or">Or</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(m => m.Filter.PlayStylesCombinationOperation, "None", new
+                        {@class="form-check-input", @id="play_styles_list_combination_operation_none"})
+                        <label class="form-check-label" for="play_styles_list_combination_operation_none">None</label>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input class="form-control btn btn-outline-primary" type="submit" value="Filter" />
+            </div>
+        </form>
+        <form>
+            <button class="form-control btn btn-outline-secondary" asp-page="./Index"
+                asp-page-handler="ClearFilter">Clear</button>
+        </form>
+    </div>
 </div>
 
 <div id="game_list">

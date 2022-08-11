@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 RUN apt-get update -yq \
     && apt-get install curl gnupg -yq \
     && curl -sL https://deb.nodesource.com/setup_16.x | bash \
-    && apt-get install npm nodejs -yq
+    && apt-get install nodejs -yq
 
 # Set work dir
 WORKDIR /app

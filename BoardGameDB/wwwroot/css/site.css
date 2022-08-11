@@ -1,7 +1,9 @@
 :root {
   --bgdb-suggestion-color: #999;
-  --bgdb-card-background-color: rgb(90, 90, 90);
-  --bgdb-card-color: white;
+  --bgdb-card-background-color-primary: rgb(229, 229, 229);
+  --bgdb-card-color-primary: black;
+  --bgdb-card-background-color-secondary: rgb(68, 68, 68);
+  --bgdb-card-color-secondary: rgb(229, 229, 229);
 }
 
 html {
@@ -110,8 +112,8 @@ span.bgdb-suggestion-input {
 
 .bgdb-card,
 .card.bgdb-card {
-  background-color: var(--bgdb-card-background-color);
-  color: var(--bgdb-card-color);
+  background-color: var(--bgdb-card-background-color-primary);
+  color: var(--bgdb-card-color-primary);
 }
 
 .bgdb-small-icon {
@@ -125,7 +127,8 @@ span.bgdb-suggestion-input {
   margin: 0;
   width: auto;
   padding: 10px;
-  background-color: black;
+  background-color: var(--bgdb-card-background-color-secondary);
+  color: var(--bgdb-card-color-secondary);
 }
 
 .bgdb-summary * {
@@ -136,4 +139,14 @@ span.bgdb-suggestion-input {
 
 .bgdb-summary span {
   width: auto;
+}
+
+.bgdb-image-container {
+  display: flex;
+  background-color: var(--bgdb-card-background-color-secondary);
+  color: var(--bgdb-card-color-secondary);
+}
+
+.bgdb-image-container img {
+  margin: auto;
 }

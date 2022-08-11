@@ -18,44 +18,49 @@ function GameList(props) {
     </ul>;
 }
 
-function generatePlayTimeRangeString(min, max)
-{
-    if(max === undefined) return "?";
-    if(max < 30) return "<30";
-    if(max <= 60) return "30-60";
-    if(max <= 120) return "60-120";
+function formatPlayTimeRangeString(min, max) {
+    if (max === undefined) return "?";
+    if (max < 30) return "<30";
+    if (max <= 60) return "30-60";
+    if (max <= 120) return "60-120";
     return ">120";
+}
+
+function formatPlayerRange(min, max) {
+    if (min == max) return min.toString();
+    return min.toString() + "-" + max;
 }
 
 function Game(props) {
     var g = props.game;
     return <div className="card bgdb-card mb-3">
         <div className="row bgdb-row g-0">
-            <div className="col-auto">
-                <img src={g.pictureUrl} className="img-fluid rounded-start bgdb-thumbnail" alt="" />
-            </div>
             <div className="col">
                 <div className="card-body bgdb-card-body">
                     <h3 className="card-title">{g.title}</h3>
+                    <small>{g.primaryMechanic.name}</small>
                 </div>
             </div>
             <div className="col-auto bgdb-summary">
                 <div className="row bgdb-row g-0">
                     <img src="/img/icon/meeple.png" className="bgdb-small-icon"></img>
-                    <span>2-4</span>
+                    <span>{formatPlayerRange(g.minimumPlayerCount, g.maximumPlayerCount)}</span>
                 </div>
                 <div className="row bgdb-row g-0">
                     <img src="/img/icon/clock.png" className="bgdb-small-icon"></img>
-                    <span>{generatePlayTimeRangeString(g.minimumPlayTimeMinutes, g.maximumPlayTimeMinutes)}</span>
+                    <span>{formatPlayTimeRangeString(g.minimumPlayTimeMinutes, g.maximumPlayTimeMinutes)}</span>
                 </div>
                 <div className="row bgdb-row g-0">
                     <img src="/img/icon/think.png" className="bgdb-small-icon"></img>
-                    <span>{g.complexityCategory}</span>
+                    <span>{g.complexity}/5</span>
                 </div>
                 <div className="row bgdb-row g-0">
                     <img src="/img/icon/location.png" className="bgdb-small-icon"></img>
                     <span>{g.location}</span>
                 </div>
+            </div>
+            <div className="col-auto bgdb-image-container">
+                <img src={g.pictureUrl} className="img-fluid rounded-start bgdb-thumbnail" alt="" />
             </div>
         </div>
     </div>;

@@ -38,7 +38,7 @@ function Game(props) {
     var g = props.game;
     var onClick = (evt) => props.onGameSelected(g.id);
     var complexityClass = "bgdb-complexity-" + Math.min(5, Math.max(1, Math.floor(g.complexity)));
-    return <div className="card bgdb-card mb-3"
+    return <div className="card bgdb-card mb-3 rounded"
         onClick={onClick}>
         <div className="row bgdb-row g-0">
             <div className="col">

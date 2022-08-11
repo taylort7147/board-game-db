@@ -185,3 +185,7 @@ span.bgdb-suggestion-input {
 .bgdb-game-list {
   padding-left: unset;
 }
+
+.card {
+  overflow: hidden;
+}

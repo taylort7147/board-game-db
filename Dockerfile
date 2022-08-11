@@ -1,6 +1,12 @@
 # Specify image
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 
+# Install node
+RUN apt-get update -yq \
+    && apt-get install curl gnupg -yq \
+    && curl -sL https://deb.nodesource.com/setup_10.x | bash \
+    && apt-get install npm nodejs -yq
+
 # Set work dir
 WORKDIR /app
 
@@ -8,8 +14,16 @@ WORKDIR /app
 COPY BoardGameDB/*.csproj ./
 RUN dotnet restore
 
-# Copy and build
+# Copy files
 COPY BoardGameDB ./
+
+# Install node packages 
+RUN npm install
+
+# Run babel on react files
+RUN npx babel wwwroot/js --out-dir wwwroot/js/react --presets react-app/prod
+
+# Build app
 RUN dotnet publish -c Release -o out
 
 # Build runtime image

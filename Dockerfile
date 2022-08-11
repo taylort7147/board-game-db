@@ -21,7 +21,7 @@ COPY BoardGameDB ./
 RUN npm install
 
 # Run babel on react files
-RUN npx babel wwwroot/js --out-dir wwwroot/js/react --presets react-app/prod
+RUN npx babel react --out-dir wwwroot/js/react --presets react-app/prod
 
 # Build app
 RUN dotnet publish -c Release -o out

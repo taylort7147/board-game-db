@@ -90,96 +90,19 @@
             asp-page-handler="ClearFilter">Clear</button>
     </form>
 </div>
+
 <div style="display: @filterPromptDisplay">
     <button class="btn btn-outline-primary"
         onclick="document.getElementById('filter-box').style.display='block'; this.style.display='none'">Filter...</button>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Game.First().Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Game.First().Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Game.First().PrimaryMechanic)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Game.First().Complexity)
-            </th>
-            <th>
-                Players
-            </th>
-            <th>
-                Play Time
-            </th>
-            <th>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Game)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                    @if (!string.IsNullOrEmpty(item.PictureUrl))
-                    {
-                        <img class="bgdb-thumbnail" src="@item.PictureUrl" />
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Location)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PrimaryMechanic.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Complexity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MinimumPlayerCount)
-                    @if (item.MinimumPlayerCount != item.MaximumPlayerCount)
-                    {
-                        <span>-</span>
-                        @Html.DisplayFor(modelItem => item.MaximumPlayerCount)
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MinimumPlayTimeMinutes)
-                    @if (item.MinimumPlayTimeMinutes == item.MaximumPlayTimeMinutes)
-                    {
-                    }
-                    else
-                    {
-                        <span>-</span>
-                        @Html.DisplayFor(modelItem => item.MaximumPlayTimeMinutes)
-                    }
-                    @if (item.MinimumPlayTimeMinutes == 1)
-                    {
-                        <span>Minute</span>
-                    }
-                    else
-                    {
-                        <span>Minutes</span>
-                    }
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div id="game_list">
+</div>
 
 @section Scripts{
 <script type="module">
     import TabCompleteInput from "/js/react/tab_complete.js";
+    import GameList from "/js/react/game_list.js";
 
     $(function () {
         ReactDOM.createRoot(document.getElementById("filter_mechanics_input"))
@@ -197,6 +120,9 @@
                 name: "Filter.PlayStylesListString",
                 value: "@Model.Filter.PlayStylesListString"
             }));
+
+        ReactDOM.createRoot(document.getElementById("game_list"))
+            .render(React.createElement(GameList, @Json.Serialize(Model.Game)));
     });
 </script>
 }

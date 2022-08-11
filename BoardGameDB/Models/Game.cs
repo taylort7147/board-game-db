@@ -6,17 +6,27 @@ namespace BoardGameDB.Models
     public class Game
     {
         public int Id { get; set; }
-        
+
         [StringLength(128)]
         [Required]
         public string Title { get; set; } = string.Empty;
-        
+
         [StringLength(8)]
         [Required]
         public string Location { get; set; } = string.Empty;
 
         [Range(1.0, 5.0)]
         public float? Complexity { get; set; }
+
+        [NotMapped]
+        public string ComplexityCategory
+        {
+            get
+            {
+                var value = ComplexityExtensions.MapFloatToComplexity(this.Complexity.GetValueOrDefault(0.0f));
+                return (value == null) ? "" : ComplexityExtensions.ToDisplayString(value.Value);    
+            }
+        }
 
         [Required]
         [Display(Name = "Primary Mechanic")]
@@ -48,7 +58,7 @@ namespace BoardGameDB.Models
 
         [Display(Name = "BoardGameGeek ID")]
         [DataType(DataType.Url)]
-        public string? BoardGameGeekId { get; set; }        
+        public string? BoardGameGeekId { get; set; }
 
         // [NotMapped]
         // public string? ComplexityString { 

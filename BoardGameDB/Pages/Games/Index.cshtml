@@ -15,8 +15,8 @@
     var filterDisplay = Model.Filter.IsDirty ? "block" : "none";
     var filterPromptDisplay = Model.Filter.IsDirty ? "none" : "block";
     } *@
-
-<div id="filter_box" class="collapse mb-3">
+<div id="filter_box" class="collapse mb-3"></div>
+<div id="filter_box_old" class="collapse mb-3 hidden">
     <div class="card card-body">
         <form>
             <div class="input-group mb-3">
@@ -101,22 +101,32 @@
 <script type="module">
     import TabCompleteInput from "/js/react/tab_complete.js";
     import GameList from "/js/react/game_list.js";
+    import GameFilter from "/js/react/game_filter.js";
 
     $(function () {
-        ReactDOM.createRoot(document.getElementById("filter_mechanics_input"))
-            .render(React.createElement(TabCompleteInput, {
-                suggestions: @Json.Serialize(Model.Mechanics),
-                sep: ";",
-                name: "Filter.MechanicsListString",
-                value: "@Model.Filter.MechanicsListString"
-            }));
-
-        ReactDOM.createRoot(document.getElementById("filter_play_styles_input"))
-            .render(React.createElement(TabCompleteInput, {
-                suggestions: @Json.Serialize(Model.PlayStyles),
-                sep: ";",
-                name: "Filter.PlayStylesListString",
-                value: "@Model.Filter.PlayStylesListString"
+        ReactDOM.createRoot(document.getElementById("filter_box"))
+            .render(React.createElement(GameFilter, {
+                complexityProps: {
+                    name: "Filter.ComplexityString",
+                    value: "@Model.Filter.ComplexityString"
+                },
+                playTimeProps: {
+                    name: "Filter.PlayTimeRangeString",
+                    value: "@Model.Filter.PlayTimeRangeString"
+                },
+                mechanicsProps: {
+                    name: "Filter.MechanicsListString",
+                    value: "@Model.Filter.MechanicsListString",
+                    options: @Json.Serialize(Model.Mechanics.OrderBy(m => m))
+                },
+                playStyleProps: {
+                    name: "Filter.PlayStylesListString",
+                    value: "@Model.Filter.PlayStylesListString",
+                    options: @Json.Serialize(Model.PlayStyles.OrderBy(ps => ps))
+                },
+                clearProps: {
+                    formAction: "/Games?handler=ClearFilter"
+                }
             }));
 
         ReactDOM.createRoot(document.getElementById("game_list"))

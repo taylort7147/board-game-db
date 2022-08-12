@@ -15,6 +15,9 @@ function GameList(props) {
                 </Game>
             </li>
         );
+    }    
+    if (gameNodes.length == 0) {
+        return <h3>No results</h3>
     }
     return <ul className="bgdb-game-list">
         {gameNodes}

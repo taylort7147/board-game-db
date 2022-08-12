@@ -19,9 +19,15 @@ COPY BoardGameDB ./
 
 # Install node packages 
 RUN npm install
+RUN npm install -g grunt-cli
+
+
 
 # Run babel on react files
 RUN npx babel react --out-dir wwwroot/js/react --presets react-app/prod
+
+# Bundle dependencies
+RUN grunt
 
 # Build app
 RUN dotnet publish -c Release -o out

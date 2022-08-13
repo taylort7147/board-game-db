@@ -30,7 +30,7 @@ class SelectList extends React.Component {
         var value = evt.target.value;
         this.setState({ value: value }, () => {
             if (this.props.onSelected !== undefined) {
-                this.props.onSelected({selectList: this, value: value});
+                this.props.onSelected({ selectList: this, value: value });
             }
         });
 
@@ -132,6 +132,35 @@ class VariableList extends React.Component {
     }
 }
 
+class NumberInput extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: props.value
+        }
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    render() {
+        var label = (this.props.label !== undefined) && <label className="input-group-text">{this.props.label}</label>
+        return <div className="input-group mb-3">
+            {label}
+            <input className="form-control"
+                type="number"
+                name={this.props.name}
+                value={this.state.value}
+                data-val="true"
+                onChange={this.handleChange} />
+        </div>;
+    }
+
+    handleChange(evt) {
+        this.setState({ value: evt.target.value });
+    }
+}
+
+
 function GameFilter(props) {
     return <div className="card card-body">
         <form>
@@ -144,6 +173,11 @@ function GameFilter(props) {
                 value={props.complexityProps.value}
             ></SelectList>
 
+            <NumberInput
+                label="PlayerCount"
+                name={props.playerCountProps.name}
+                value={props.playerCountProps.value}></NumberInput>
+
             <SelectList
                 className="mb-3"
                 label="Play Time"
@@ -152,7 +186,9 @@ function GameFilter(props) {
                 options={["", "Less than 30 minutes", "30-60 minutes", "1-2 hours", "More than 2 hours"]}
                 value={props.playTimeProps.value}
             ></SelectList>
+            <div className="mb-3">
 
+            </div>
             <VariableList
                 className="mb-3"
                 label="Mechanics"
@@ -160,6 +196,7 @@ function GameFilter(props) {
                 value={props.mechanicsProps.value}
                 options={props.mechanicsProps.options}
             ></VariableList>
+
 
             <VariableList
                 className="mb-3"

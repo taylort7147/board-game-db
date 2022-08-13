@@ -106,6 +106,10 @@
     $(function () {
         ReactDOM.createRoot(document.getElementById("filter_box"))
             .render(React.createElement(GameFilter, {
+                titleProps: {
+                    name: "Filter.Title",
+                    value: "@Model.Filter.Title"
+                },
                 complexityProps: {
                     name: "Filter.ComplexityString",
                     value: "@Model.Filter.ComplexityString"

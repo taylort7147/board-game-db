@@ -132,7 +132,7 @@ class VariableList extends React.Component {
     }
 }
 
-class NumberInput extends React.Component {
+class BasicInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -147,7 +147,7 @@ class NumberInput extends React.Component {
         return <div className="input-group mb-3">
             {label}
             <input className="form-control"
-                type="number"
+                type={this.props.type}
                 name={this.props.name}
                 value={this.state.value}
                 data-val="true"
@@ -164,6 +164,14 @@ class NumberInput extends React.Component {
 function GameFilter(props) {
     return <div className="card card-body">
         <form>
+
+            <BasicInput
+                label="Title"
+                name={props.titleProps.name}
+                value={props.titleProps.value}
+                type="text"
+            ></BasicInput>
+
             <SelectList
                 className="mb-3"
                 label="Complexity"
@@ -173,10 +181,11 @@ function GameFilter(props) {
                 value={props.complexityProps.value}
             ></SelectList>
 
-            <NumberInput
-                label="PlayerCount"
+            <BasicInput
+                label="Player Count"
                 name={props.playerCountProps.name}
-                value={props.playerCountProps.value}></NumberInput>
+                value={props.playerCountProps.value}
+                type="number"></BasicInput>
 
             <SelectList
                 className="mb-3"

@@ -1,3 +1,8 @@
 ﻿@using BoardGameDB
+@using BoardGameDB.Areas.Identity;
+@using Microsoft.AspNetCore.Authorization
+
 @namespace BoardGameDB.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@inject IAuthorizationService AuthorizationService

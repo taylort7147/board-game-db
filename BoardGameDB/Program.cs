@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
+using Microsoft.AspNetCore.Identity;
+using BoardGameDB.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +10,10 @@ builder.Services.AddRazorPages();
 
 var connectionString = Environment.GetEnvironmentVariable("BGDB_CONNECTION_STRING")
     ?? builder.Configuration.GetConnectionString("DefaultConnection");
-
+builder.Services.AddDbContext<BoardGameDBContext>(options =>
+    options.UseSqlServer(connectionString));builder.Services.AddDbContext<BoardGameDBIdentityDbContext>(options =>
+    options.UseSqlServer(connectionString));builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<BoardGameDBIdentityDbContext>();
 builder.Services.AddDbContext<BoardGameDB.Data.BoardGameDBContext>(
     options => options.UseSqlite(connectionString)
 );
@@ -36,7 +41,7 @@ using (var scope = app.Services.CreateScope())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthorization();
+app.UseAuthentication();app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapRazorPages();

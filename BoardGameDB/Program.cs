@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.AspNetCore.Identity;
 using BoardGameDB.Areas.Identity.Data;
-using BoardGameDB.Areas.Identity;
+using BoardGameDB.Areas.Identity.Authorization;
+using Microsoft.AspNetCore.Authorization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,17 +12,29 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 var connectionString = Environment.GetEnvironmentVariable("BGDB_CONNECTION_STRING")
-    ?? builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<BoardGameDBContext>(options =>
-    options.UseSqlServer(connectionString));builder.Services.AddDbContext<BoardGameDBIdentityDbContext>(options =>
-    options.UseSqlServer(connectionString));builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    ?? builder.Configuration.GetConnectionString("BoardGameDBContextConnection");
+var identityConnectionString = Environment.GetEnvironmentVariable("BGDB_IDENTITY_CONNECTION_STRING")
+    ?? builder.Configuration.GetConnectionString("BoardGameDBIdentityDbContextConnection");
+
+builder.Services.AddDbContext<BoardGameDB.Data.BoardGameDBContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<BoardGameDBIdentityDbContext>(options => options.UseSqlite(identityConnectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BoardGameDBIdentityDbContext>();
-builder.Services.AddDbContext<BoardGameDB.Data.BoardGameDBContext>(
-    options => options.UseSqlite(connectionString)
-);
 
 builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        Policy.ReadWrite, 
+        policy => policy.RequireRole(
+            Role.Administrator,
+            Role.Editor));
+});
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -54,9 +68,6 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
-// Role-based authorization
-builder.Services.AddDefaultIdentity<IdentityUser>()
-    .AddRoles<IdentityRole>();
 
 var app = builder.Build();
 
@@ -75,9 +86,6 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
 }
 
-// Add roles to DB if not existing
-
-
 static async Task CreateRoleIfMissingAsync(RoleManager<IdentityRole> roleManager, string role)
 {
     if (!await roleManager.RoleExistsAsync(role))
@@ -86,11 +94,17 @@ static async Task CreateRoleIfMissingAsync(RoleManager<IdentityRole> roleManager
     }
 }
 
+
+// Set up identity DB
 using (var scope = app.Services.CreateScope())
 {
+    var db = scope.ServiceProvider.GetRequiredService<BoardGameDB.Areas.Identity.Data.BoardGameDBIdentityDbContext>();
+    db.Database.Migrate();
+    db.Database.EnsureCreated();
+
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    await CreateRoleIfMissingAsync(roleManager, Roles.ReadWrite);
-    await CreateRoleIfMissingAsync(roleManager, Roles.Administrator);
+    await CreateRoleIfMissingAsync(roleManager, Role.Editor);
+    await CreateRoleIfMissingAsync(roleManager, Role.Administrator);
 }
 
 app.UseHttpsRedirection();

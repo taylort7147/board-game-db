@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
+using BoardGameDB.Areas.Identity.Authorization;
 
 namespace BoardGameDB.Pages_Mechanics
 {
+    [Authorize(Policy = Policy.ReadWrite)]
     public class CreateModel : PageModel
     {
         private readonly BoardGameDB.Data.BoardGameDBContext _context;

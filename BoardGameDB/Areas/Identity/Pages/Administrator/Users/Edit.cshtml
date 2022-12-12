@@ -1,0 +1,37 @@
+@page
+@model BoardGameDB.Areas.Identity.Pages.Administrator.Users.EditModel
+@{
+    ViewData["Title"] = "Edit User";
+}
+<h1>Edit</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdentityUser.Id" />
+            <div class="form-group">
+                <label asp-for="IdentityUser.UserName" class="control-label"></label>
+                <input disabled asp-for="IdentityUser.UserName" />
+            </div>
+            <div class="form-group">
+                <partial name="_CheckBoxPartial"  for="@Model.IsEditorCheckBox">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+            <div>
+                <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@Model.IdentityUser.Id" role="button">Delete</a>
+            </div>
+            <div>
+                <a asp-page="./Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

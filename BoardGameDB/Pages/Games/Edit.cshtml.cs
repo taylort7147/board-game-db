@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,9 +13,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
+using BoardGameDB.Areas.Identity.Authorization;
 
 namespace BoardGameDB.Pages_Games
 {
+    [Authorize(Policy=Policy.ReadWrite)]
     // TODO: Fix data transfer size
     // Right now each checkbox item has at least one
     // piece of data associated with it. This solution does

@@ -1,0 +1,76 @@
+@model BoardGameDB.Pages.Shared.CheckBoxModel
+
+<!-- TODO: Move to site CSS -->
+<style type="text/css">
+.switch {
+    --switch-height: 1rem;
+    --switch-width: 2rem;
+    --slider-radius: .8rem;
+    --switch-padding: calc((var(--switch-height) - var(--slider-radius))/2);
+    --slider-left: calc((var(--switch-height) - var(--slider-radius))/2);
+    --slider-bottom: calc((var(--switch-height) - var(--slider-radius))/2);
+    --slider-translate-x: calc(var(--switch-width) - var(--slider-radius) - 2 * var(--switch-padding))
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: var(--switch-width);
+  height: var(--switch-height);
+  vertical-align: bottom;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: var(--slider-radius);
+  width: var(--slider-radius);
+  left: var(--slider-left);
+  bottom: var(--slider-bottom);
+  background-color: white;
+  transition: .4s;
+}
+
+input[type="checkbox"]:checked + input[type="hidden"] + .slider,
+input[type="checkbox"]:checked + .slider {
+  background-color: #2196F3;
+}
+
+input[type="checkbox"]:focus + input[type="hidden"] + .slider,
+input[type="checkbox"]:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input[type="checkbox"]:checked + input[type="hidden"] + .slider:before,
+input[type="checkbox"]:checked + .slider:before {
+  transform: translateX(var(--slider-translate-x));
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: var(--slider-radius);
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
+
+<label>@Model.DisplayName</label>
+<input type="hidden" asp-for="DisplayName" />
+<label class="switch">
+    @Html.CheckBoxFor(m => m.IsChecked, new { @class = "form-control" })
+    <div class="slider round"></div>
+</label>

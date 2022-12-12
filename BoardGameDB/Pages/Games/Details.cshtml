@@ -1,6 +1,5 @@
 @page
 @model BoardGameDB.Pages_Games.DetailsModel
-
 @{
     ViewData["Title"] = "Details";
 }
@@ -128,6 +127,9 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Game?.Id">Edit</a> |
+    @if((await AuthorizationService.AuthorizeAsync(User, Policy.ReadWrite)).Succeeded)
+    {
+    <a asp-page="./Edit" asp-route-id="@Model.Game?.Id">Edit</a><span>|</span>
+    }
     <a asp-page="./Index">Back to List</a>
 </div>

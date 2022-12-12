@@ -1,0 +1,31 @@
+@page
+@model BoardGameDB.Areas.Identity.Pages.Administrator.Users.IndexModel
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Users[0].UserName)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var user in Model.Users)
+            {
+                <tr>
+                    <td>
+                        @user.UserName
+                    </td>
+                    <td>
+                        <a class="btn btn-light" asp-page="./Edit" asp-route-id="@user.Id">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
+using BoardGameDB.Areas.Identity.Authorization;
 
 namespace BoardGameDB.Pages_Categories
 {
+    [Authorize(Policy = Policy.ReadWrite)]
     public class EditModel : PageModel
     {
         private readonly BoardGameDB.Data.BoardGameDBContext _context;
@@ -30,7 +33,7 @@ namespace BoardGameDB.Pages_Categories
                 return NotFound();
             }
 
-            var category =  await _context.Category.FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _context.Category.FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -71,7 +74,7 @@ namespace BoardGameDB.Pages_Categories
 
         private bool CategoryExists(int id)
         {
-          return (_context.Category?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Category?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

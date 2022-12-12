@@ -8,7 +8,10 @@
 <p>
     <a class="btn btn-dark" data-bs-toggle="collapse" href="#filter_box" role="button" aria-expanded="false"
         aria-controls="filter_box">Filter</a>
+    @if((await AuthorizationService.AuthorizeAsync(User, Policy.ReadWrite)).Succeeded)
+    {
     <a class="btn btn-dark" asp-page="Create">Create New</a>
+    }
 </p>
 
 @* @{

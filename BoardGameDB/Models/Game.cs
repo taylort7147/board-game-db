@@ -57,7 +57,6 @@ namespace BoardGameDB.Models
         public string? RulesVideoUrl { get; set; }
 
         [Display(Name = "BoardGameGeek ID")]
-        [DataType(DataType.Url)]
         public string? BoardGameGeekId { get; set; }
 
         // [NotMapped]

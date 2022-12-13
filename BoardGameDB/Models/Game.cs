@@ -11,9 +11,7 @@ namespace BoardGameDB.Models
         [Required]
         public string Title { get; set; } = string.Empty;
 
-        [StringLength(8)]
-        [Required]
-        public string Location { get; set; } = string.Empty;
+        public string? Location { get; set; } = string.Empty;
 
         [Range(1.0, 5.0)]
         public float? Complexity { get; set; }

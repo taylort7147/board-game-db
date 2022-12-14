@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -168,6 +169,10 @@ namespace BoardGameDB.Pages_Games
         [BindProperty]
         public List<string> PlayStyles { get; set; } = default!;
 
+        private static Expression<Func<Game, string>> RemoveUnimportantWordsInTitle()
+        {
+            return g => g.Title.Replace("The ", "").Replace("A ", ""); 
+        }
 
         public async Task OnGetAsync()
         {
@@ -232,9 +237,10 @@ namespace BoardGameDB.Pages_Games
                         break;
                 }
             }
+
             games = games
                 .Include(g => g.PrimaryMechanic)
-                .OrderBy(g => g.Title);
+                .OrderBy(RemoveUnimportantWordsInTitle());
 
             if (games != null)
             {

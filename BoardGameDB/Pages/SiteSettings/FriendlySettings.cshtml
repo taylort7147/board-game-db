@@ -1,0 +1,32 @@
+@page
+@model BoardGameDB.Pages_SiteSettings.FriendlySettingsModel
+
+@{
+    ViewData["Title"] = "Settings";
+}
+
+<h1>Settings</h1>
+
+<h2>Theme</h2>
+<hr />
+<div>
+
+    <form method="post">
+        <div class="form-group">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <table>
+                <tbody>
+                    @foreach(var setting in Model.Theme.GetCssRootVarSettings())
+                    {
+                        @await Html.PartialAsync("_ColorSettingTableRowPartial", new ColorSettingsTableRowParitalModel{
+                        PropertyId="Theme_" + setting.Key,
+                        PropertyName="Theme." + setting.Key,
+                        Setting=setting.Value})
+                    }                       
+                </tbody>
+            </table>
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+    <a asp-page="./Index">Advanced Settings</a>
+</div>

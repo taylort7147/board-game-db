@@ -9,13 +9,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
+using BoardGameDB.Pages.Shared;
 
 namespace BoardGameDB.Pages_Games
 {
-    public class IndexModel : PageModel
+    public class IndexModel : PageModelBase
     {
-        private readonly BoardGameDB.Data.BoardGameDBContext _context;
-
         public class FilterCriteria
         {
             public FilterCriteria()
@@ -149,9 +148,9 @@ namespace BoardGameDB.Pages_Games
             public string PlayStylesCombinationOperation { get; set; } = "And";
         }
 
-        public IndexModel(BoardGameDB.Data.BoardGameDBContext context)
+        public IndexModel(BoardGameDB.Data.BoardGameDBContext context) :
+            base(context)
         {
-            _context = context;
             Filter = new FilterCriteria();
             ComplexityListItems = ComplexityExtensions.AsEnumerable(includeEmptySelection: true);
         }
@@ -176,6 +175,10 @@ namespace BoardGameDB.Pages_Games
 
         public async Task OnGetAsync()
         {
+            LoadSettings();
+            LoadTheme();
+            ViewData["Theme"] = Theme;
+
             Mechanics = await _context.Mechanic.OrderBy(m => m.Name).Select(m => m.Name).ToListAsync();
             PlayStyles = await _context.PlayStyle.OrderBy(ps => ps.Name).Select(ps => ps.Name).ToListAsync();
             Game = new List<Game>();

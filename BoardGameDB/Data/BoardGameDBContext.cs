@@ -19,6 +19,7 @@ namespace BoardGameDB.Data
         public DbSet<Category> Category { get; set; } = null!;
         public DbSet<Mechanic> Mechanic { get; set; } = null!;
         public DbSet<PlayStyle> PlayStyle { get; set; } = null!;
+        public DbSet<BoardGameDB.Models.SiteSetting> SiteSetting { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
 

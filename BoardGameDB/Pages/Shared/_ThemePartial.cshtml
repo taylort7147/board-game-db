@@ -1,0 +1,11 @@
+@model BoardGameDB.Pages.Shared.ThemeSettings
+
+<script>
+    var r = document.querySelector(':root');
+    var settings = @Json.Serialize(Model.GetCssRootVarSettings());
+    for(var key in settings)
+    {
+        var setting = settings[key];
+        r.style.setProperty(setting.name, setting.value);
+    }
+</script>

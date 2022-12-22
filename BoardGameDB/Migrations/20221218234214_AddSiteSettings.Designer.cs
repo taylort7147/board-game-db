@@ -3,6 +3,7 @@ using System;
 using BoardGameDB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardGameDB.Migrations
 {
     [DbContext(typeof(BoardGameDBContext))]
-    partial class BoardGameDBContextModelSnapshot : ModelSnapshot
+    [Migration("20221218234214_AddSiteSettings")]
+    partial class AddSiteSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,11 +132,6 @@ namespace BoardGameDB.Migrations
             modelBuilder.Entity("BoardGameDB.Models.SiteSetting", b =>
                 {
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT")
-                        .UseCollation("NOCASE");
-
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .UseCollation("NOCASE");
 

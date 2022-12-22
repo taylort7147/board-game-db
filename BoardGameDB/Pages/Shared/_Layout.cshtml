@@ -7,6 +7,25 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/bootstrap-icons.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @{
+        // Override theme settings
+        var themeObj = ViewData["Theme"];
+        if (themeObj != null)
+        {
+            try
+            {
+                var theme = (BoardGameDB.Pages.Shared.ThemeSettings)(themeObj);
+
+                if (theme != null)
+                {
+                    await Html.PartialAsync("_ThemePartial", theme);
+                }
+            }
+            catch (InvalidCastException)
+            {
+            }
+        }
+    }
     <link rel="stylesheet" href="~/BoardGameDB.styles.css" asp-append-version="true" />
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -17,38 +36,42 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     @* <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script> *@
-    
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="bgdb-navbar navbar navbar-expand-sm navbar-toggleable-sm box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">BoardGameDB</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <button class="bgdb-navbar-toggler navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Games/Index">Games</a>
+                            <a class="nav-link" asp-area="" asp-page="/Games/Index">Games</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Mechanics/Index">Mechanics</a>
+                            <a class="nav-link" asp-area="" asp-page="/Mechanics/Index">Mechanics</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Categories/Index">Categories</a>
+                            <a class="nav-link" asp-area="" asp-page="/Categories/Index">Categories</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/PlayStyles/Index">Play Styles</a>
+                            <a class="nav-link" asp-area="" asp-page="/PlayStyles/Index">Play Styles</a>
                         </li>
-                        @if(User.IsInRole(Role.Administrator))
-                            {
-                            <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Identity"
-                            asp-page="/Administrator/Users/Index">Users</a>
-                            </li>
-                            }
+                        @if ((await AuthorizationService.AuthorizeAsync(User, Policy.ReadWrite)).Succeeded)
+                        {                       
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/SiteSettings/FriendlySettings">Settings</a>
+                        </li>
+                        }
+                        @if (User.IsInRole(Role.Administrator))
+                        {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Identity" asp-page="/Administrator/Users/Index">Users</a>
+                        </li> 
+                        }
                     </ul>                    
                     <partial name="_LoginPartial" />
                 </div>

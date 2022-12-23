@@ -9,23 +9,25 @@ using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Areas.Identity.Authorization;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
+using BoardGameDB.Pages.Shared;
 
 namespace BoardGameDB.Pages_SiteSettings
 {
     [Authorize(Policy = Policy.ReadWrite)]
-    public class IndexModel : PageModel
+    public class IndexModel : PageModelBase
     {
-        private readonly BoardGameDBContext _context;
-
-        public IndexModel(BoardGameDBContext context)
+        public IndexModel(BoardGameDBContext context) :
+            base(context)
         {
-            _context = context;
         }
 
         public IList<SiteSetting> SiteSetting { get; set; }
 
         public async Task OnGetAsync()
         {
+            await LoadThemeAsync();
+            ViewData["Theme"] = Theme;
+            
             SiteSetting = await _context.SiteSetting.ToListAsync();
         }
     }

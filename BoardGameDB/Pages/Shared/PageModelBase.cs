@@ -30,19 +30,17 @@ namespace BoardGameDB.Pages.Shared
             Settings = from s in _context.SiteSetting select s;
         }
 
-        private void UpdateSettingValue(ref string field, string settingName)
+        public async Task LoadThemeAsync()
         {
-            var setting = Settings.Where(s => s.Name == settingName).FirstOrDefault();
-            if(setting != null)
-            {
-                field = setting.Value;
-            }
-        }
-
-        public async Task LoadTheme()
-        {
+            LoadSettings();
             Theme = new ThemeSettings();
             await Theme.ReadAsync(_context);
+        }
+
+        public void LoadTheme()
+        {
+            var task = LoadThemeAsync();
+            task.Wait();
         }
     }
 }

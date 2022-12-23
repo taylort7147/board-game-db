@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
 using BoardGameDB.Areas.Identity.Authorization;
+using BoardGameDB.Pages.Shared;
 
 namespace BoardGameDB.Pages_Games
 {
@@ -24,7 +25,7 @@ namespace BoardGameDB.Pages_Games
     // not scale well with large numbers of data.
     [RequestFormLimits(ValueCountLimit = int.MaxValue)]
 
-    public class EditModel : PageModel
+    public class EditModel : PageModelBase
     {
         public class Checkbox
         {
@@ -33,12 +34,9 @@ namespace BoardGameDB.Pages_Games
             public bool IsChecked { get; set; }
         }
 
-        private readonly BoardGameDB.Data.BoardGameDBContext _context;
-
-        public EditModel(BoardGameDB.Data.BoardGameDBContext context)
+        public EditModel(BoardGameDB.Data.BoardGameDBContext context) :
+            base(context)
         {
-            _context = context;
-
             // ComplexityListItems = ComplexityExtensions.AsEnumerable(includeEmptySelection: true);
             MechanicCheckboxes = new List<Checkbox>();
             MechanicPrimaryCheckboxes = new List<Checkbox>();
@@ -70,6 +68,9 @@ namespace BoardGameDB.Pages_Games
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            await LoadThemeAsync();
+            ViewData["Theme"] = Theme;
+            
             if (id == null || _context.Game == null)
             {
                 return NotFound();

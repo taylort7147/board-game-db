@@ -4,6 +4,7 @@
     var displayNameId = Model.PropertyId + "_DisplayName";
     var valueId = Model.PropertyId + "_Value";
     var valueName = Model.PropertyName + ".Value";
+    var colorBoxId = Model.PropertyId + "_Color_Box";
 }
 
 <tr>
@@ -14,10 +15,11 @@
     </td>
     <td>
         <input id="@valueId" class="form-control" value="@Model.Setting.Value"
-        type="text" data-val="true" data-val-required="The Value field is required." name="@valueName"/>
+        type="text" data-val="true" data-val-required="The Value field is required." name="@valueName"
+        oninput="document.getElementById('@colorBoxId').style.backgroundColor=this.value"/>
     </td>
     <td>
-        <div style="width:30px;height:30px;border:1px solid black;background-color:@Model.Setting.Value"></div>
+        <div id="@colorBoxId" style="width:30px;height:30px;border:1px solid black;background-color:@Model.Setting.Value"></div>
     </td>
     <span asp-validation-for="Setting.Value" class="text-danger"></span>
 </tr>

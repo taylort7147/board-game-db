@@ -13,26 +13,25 @@ using BoardGameDB.Pages.Shared;
 namespace BoardGameDB.Pages_SiteSettings
 {
     [Authorize(Policy = Policy.ReadWrite)]
-    public class FriendlySettingsModel : PageModel
+    public class FriendlySettingsModel : PageModelBase
     {
-        private readonly BoardGameDBContext _context;
-
         [BindProperty]
         public ThemeSettings Theme { get; set; }
 
-        public FriendlySettingsModel(BoardGameDBContext context)
+        public FriendlySettingsModel(BoardGameDBContext context) :
+            base(context)
         {
-            _context = context;
         }
 
         public async Task OnGetAsync()
         {
             Theme = new ThemeSettings();
             await Theme.ReadAsync(_context);
+            ViewData["Theme"] = Theme;
         }
 
         public async Task<IActionResult> OnPostAsync()
-        {
+        {            
             if (!ModelState.IsValid)
             {
                 return Page();

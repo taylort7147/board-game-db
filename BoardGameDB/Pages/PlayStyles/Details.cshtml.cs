@@ -7,22 +7,24 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
+using BoardGameDB.Pages.Shared;
 
 namespace BoardGameDB.Pages_PlayStyles
 {
-    public class DetailsModel : PageModel
+    public class DetailsModel : PageModelBase
     {
-        private readonly BoardGameDB.Data.BoardGameDBContext _context;
-
-        public DetailsModel(BoardGameDB.Data.BoardGameDBContext context)
+        public DetailsModel(BoardGameDB.Data.BoardGameDBContext context) :
+            base(context)
         {
-            _context = context;
         }
 
       public PlayStyle PlayStyle { get; set; } = default!; 
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            await LoadThemeAsync();
+            ViewData["Theme"] = Theme;
+            
             if (id == null || _context.PlayStyle == null)
             {
                 return NotFound();

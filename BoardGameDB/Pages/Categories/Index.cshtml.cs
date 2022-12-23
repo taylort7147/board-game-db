@@ -7,22 +7,24 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
+using BoardGameDB.Pages.Shared;
 
 namespace BoardGameDB.Pages_Categories
 {
-    public class IndexModel : PageModel
+    public class IndexModel : PageModelBase
     {
-        private readonly BoardGameDB.Data.BoardGameDBContext _context;
-
-        public IndexModel(BoardGameDB.Data.BoardGameDBContext context)
+        public IndexModel(BoardGameDB.Data.BoardGameDBContext context) :
+            base(context)
         {
-            _context = context;
         }
 
         public IList<Category> Category { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
+            await LoadThemeAsync();
+            ViewData["Theme"] = Theme;
+            
             if (_context.Category != null)
             {
                 Category = await _context.Category

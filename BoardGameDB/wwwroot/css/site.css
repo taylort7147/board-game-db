@@ -58,7 +58,9 @@ body {
   border-color: #ced4da;
 }
 
+.btn.btn-primary,
 .btn.bgdb-btn {
+  border-color: transparent;
   background-color: var(--bgdb-theme-accent-background-color);
   color: var(--bgdb-theme-accent-text-color);
 }

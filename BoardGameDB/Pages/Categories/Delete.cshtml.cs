@@ -9,17 +9,16 @@ using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
 using BoardGameDB.Areas.Identity.Authorization;
+using BoardGameDB.Pages.Shared;
 
 namespace BoardGameDB.Pages_Categories
 {
     [Authorize(Policy = Policy.ReadWrite)]
-    public class DeleteModel : PageModel
+    public class DeleteModel : PageModelBase
     {
-        private readonly BoardGameDB.Data.BoardGameDBContext _context;
-
-        public DeleteModel(BoardGameDB.Data.BoardGameDBContext context)
+        public DeleteModel(BoardGameDB.Data.BoardGameDBContext context) :
+            base(context)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -27,6 +26,9 @@ namespace BoardGameDB.Pages_Categories
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            await LoadThemeAsync();
+            ViewData["Theme"] = Theme;
+            
             if (id == null || _context.Category == null)
             {
                 return NotFound();

@@ -11,20 +11,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using BoardGameDB.Pages.Shared;
 
 namespace BoardGameDB.Areas.Identity.Pages.Administrator.Users
 {
     [Authorize(Roles = "Administrator")]
-    public class EditModel : PageModel
+    public class EditModel : PageModelBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly BoardGameDBIdentityDbContext _context;
+        private readonly BoardGameDBIdentityDbContext _identityContext;
 
         public EditModel(UserManager<IdentityUser> userManager,
-                         BoardGameDBIdentityDbContext context)
+                         BoardGameDB.Data.BoardGameDBContext context,
+                         BoardGameDBIdentityDbContext identityContext) :
+            base(context)
         {
             _userManager = userManager;
-            _context = context;
+            _identityContext = identityContext;
         }
 
         [BindProperty]
@@ -35,6 +38,8 @@ namespace BoardGameDB.Areas.Identity.Pages.Administrator.Users
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
+            await LoadThemeAsync();
+            ViewData["Theme"] = Theme;
             if (id == null)
             {
                 return NotFound();
@@ -71,14 +76,14 @@ namespace BoardGameDB.Areas.Identity.Pages.Administrator.Users
             {
                 await _userManager.UpdateSecurityStampAsync(IdentityUser);
                 await _userManager.RemoveFromRoleAsync(IdentityUser, role);
-                await _context.SaveChangesAsync();
+                await _identityContext.SaveChangesAsync();
             }
             else if (isChecked &&
                     !(await _userManager.IsInRoleAsync(IdentityUser, role)))
             {
                 await _userManager.UpdateSecurityStampAsync(IdentityUser);
                 await _userManager.AddToRoleAsync(IdentityUser, role);
-                await _context.SaveChangesAsync();
+                await _identityContext.SaveChangesAsync();
             }
         }
     }

@@ -10,18 +10,17 @@ using Microsoft.EntityFrameworkCore;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
 using BoardGameDB.Areas.Identity.Authorization;
+using BoardGameDB.Pages.Shared;
 
 namespace BoardGameDB.Pages_PlayStyles
 {
 
     [Authorize(Policy = Policy.ReadWrite)]
-    public class EditModel : PageModel
+    public class EditModel : PageModelBase
     {
-        private readonly BoardGameDB.Data.BoardGameDBContext _context;
-
-        public EditModel(BoardGameDB.Data.BoardGameDBContext context)
+        public EditModel(BoardGameDB.Data.BoardGameDBContext context) :
+            base(context)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -29,6 +28,9 @@ namespace BoardGameDB.Pages_PlayStyles
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            await LoadThemeAsync();
+            ViewData["Theme"] = Theme;
+            
             if (id == null || _context.PlayStyle == null)
             {
                 return NotFound();

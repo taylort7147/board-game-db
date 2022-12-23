@@ -9,18 +9,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
 using BoardGameDB.Areas.Identity.Authorization;
+using BoardGameDB.Pages.Shared;
 
 namespace BoardGameDB.Pages_Games
 {
     [Authorize(Policy = Policy.ReadWrite)]
-    public class CreateModel : PageModel
+    public class CreateModel : PageModelBase
     {
-        private readonly BoardGameDB.Data.BoardGameDBContext _context;
-
-        public CreateModel(BoardGameDB.Data.BoardGameDBContext context)
+        public CreateModel(BoardGameDB.Data.BoardGameDBContext context) :
+            base(context)
         {
-            _context = context;
-
             ComplexityListItems = ComplexityExtensions.AsEnumerable(includeEmptySelection: true);
             MechanicListItems = new List<SelectListItem>();
         }
@@ -33,6 +31,9 @@ namespace BoardGameDB.Pages_Games
 
         public IActionResult OnGet()
         {
+            LoadTheme();
+            ViewData["Theme"] = Theme;
+            
             var mechanicList = new List<SelectListItem> { new SelectListItem { Text = null, Value = null } };
             mechanicList.AddRange(_context.Mechanic
                 .OrderBy(m => m.Name)

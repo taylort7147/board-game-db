@@ -12,27 +12,32 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using BoardGameDB.Pages.Shared;
+using BoardGameDB.Data;
 
 namespace BoardGameDB.Areas.Identity.Pages.Administrator.Users
 {
     [Authorize(Roles = "Administrator")]
-    public class IndexModel : PageModel
+    public class IndexModel : PageModelBase
     {
-        private readonly BoardGameDBIdentityDbContext _context;
+        private readonly BoardGameDBIdentityDbContext _identityContext;
 
-        public IndexModel(BoardGameDBIdentityDbContext context)
+        public IndexModel(BoardGameDBContext context, BoardGameDBIdentityDbContext identityContext) : 
+            base(context)
         {
-            _context = context;
+            _identityContext = identityContext;
         }
 
-        public IList<IdentityUser> Users { get; set; }
+        public IList<IdentityUser> Users { get; set; } = default!;
 
-        public string ReturnUrl { get; set; }
+        public string ReturnUrl { get; set; } = default!;
 
         public async Task OnGetAsync(string? returnUrl = null)
         {
-            ReturnUrl = returnUrl;
-            Users = await _context.Users.ToListAsync();
+            await LoadThemeAsync();
+            ViewData["Theme"] = Theme;
+            ReturnUrl = String.IsNullOrEmpty(returnUrl) ? "" : returnUrl;
+            Users = await _identityContext.Users.ToListAsync();
         }
     }
 }

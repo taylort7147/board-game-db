@@ -175,8 +175,7 @@ namespace BoardGameDB.Pages_Games
 
         public async Task OnGetAsync()
         {
-            LoadSettings();
-            LoadTheme();
+            await LoadThemeAsync();
             ViewData["Theme"] = Theme;
 
             Mechanics = await _context.Mechanic.OrderBy(m => m.Name).Select(m => m.Name).ToListAsync();

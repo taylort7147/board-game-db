@@ -9,21 +9,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using BoardGameDB.Data;
 using BoardGameDB.Models;
 using BoardGameDB.Areas.Identity.Authorization;
+using BoardGameDB.Pages.Shared;
 
 namespace BoardGameDB.Pages_Mechanics
 {
     [Authorize(Policy = Policy.ReadWrite)]
-    public class CreateModel : PageModel
+    public class CreateModel : PageModelBase
     {
-        private readonly BoardGameDB.Data.BoardGameDBContext _context;
-
-        public CreateModel(BoardGameDB.Data.BoardGameDBContext context)
+        public CreateModel(BoardGameDB.Data.BoardGameDBContext context) :
+            base(context)
         {
-            _context = context;
         }
 
         public IActionResult OnGet()
         {
+            LoadTheme();
+            ViewData["Theme"] = Theme;
+            
             return Page();
         }
 

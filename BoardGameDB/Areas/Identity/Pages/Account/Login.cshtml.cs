@@ -14,15 +14,17 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using BoardGameDB.Pages.Shared;
 
 namespace BoardGameDB.Areas.Identity.Pages.Account
 {
-    public class LoginModel : PageModel
+    public class LoginModel : PageModelBase
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(BoardGameDB.Data.BoardGameDBContext context, SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger) :
+            base(context)
         {
             _signInManager = signInManager;
             _logger = logger;
@@ -86,6 +88,8 @@ namespace BoardGameDB.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            await LoadThemeAsync();
+            ViewData["Theme"] = Theme;
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);

@@ -222,6 +222,18 @@ header,
   color: var(--bgdb-theme-navbar-text-color);
 }
 
-.navbar-toggler-icon {  
+.navbar-toggler-icon {
   background-image: var(--bgdb-theme-navbar-toggler-icon-url);
+}
+
+.bgdb-game-image {
+  max-width: 600px;
+  max-height: 600px;
+  width: 50%;
+}
+
+@media only screen and (max-width: 767px) {
+  .bgdb-game-image {
+    width: 100%;
+  }
 }

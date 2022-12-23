@@ -3,6 +3,69 @@
 
 // Write your JavaScript code.
 
+function colorStringToRgba(s) {
+    const reLongHex = /#([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})/i;
+    const reLongHexNoAlpha = /#([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})/i;
+    const reShortHex = /#([a-f0-9])([a-f0-9])([a-f0-9])([a-f0-9])/i;
+    const reShortHexNoAlpha = /#([a-f0-9])([a-f0-9])([a-f0-9])/i;
+    const reRgba = /rgba\s*\(\s*([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9]+(\.[0-9]*)?)\s*\)/;
+    const reRgb = /rgb\s*\(\s*([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9]+)\s*\)/;
+
+    var matches;
+    var r = g = b = 0;
+    var a = 1.0;
+
+    if (matches = s.match(reLongHex)) {
+        console.log(`"${s} is long hex`);
+        var [_, rs, gs, bs, as] = matches;
+        r = parseInt(rs, 16);
+        g = parseInt(gs, 16); 
+        b = parseInt(bs, 16);
+        a = parseInt(as, 16) / 255.0;
+    }
+    else if (matches = s.match(reLongHexNoAlpha)) {
+        console.log(`"${s} is long hex (no alpha)`);
+        var [_, rs, gs, bs] = matches;
+        r = parseInt(rs, 16);
+        g = parseInt(gs, 16); 
+        b = parseInt(bs, 16);
+    }
+    else if (matches = s.match(reShortHex)) {
+        var [_, rs, gs, bs, as] = matches;
+        console.log(`"${s}" is short hex`);
+        r = parseInt(rs, 16) / 15.0 * 255.0;
+        g = parseInt(gs, 16) / 15.0 * 255.0; 
+        b = parseInt(bs, 16) / 15.0 * 255.0;
+        a = parseInt(as, 16) / 15.0;
+    }
+    else if (matches = s.match(reShortHexNoAlpha)) {
+        console.log(`"${s}" is short hex (no alpha)`);
+        var [_, rs, gs, bs] = matches;
+        r = parseInt(rs, 16) / 15.0 * 255.0;
+        g = parseInt(gs, 16) / 15.0 * 255.0; 
+        b = parseInt(bs, 16) / 15.0 * 255.0;
+    }
+    else if (matches = s.match(reRgba)) {
+        console.log(`"${s}" is rgba`);
+        var [_, rs, gs, bs, as] = matches;
+        r = parseFloat(rs);
+        g = parseFloat(gs); 
+        b = parseFloat(bs);
+        a = parseFloat(as);
+    }
+    else if (matches = s.match(reRgb)) {
+        console.log(`"${s}" is rgb`);
+        var [_, rs, gs, bs] = matches;
+        r = parseFloat(rs);
+        g = parseFloat(gs); 
+        b = parseFloat(bs);
+    }
+    else {
+        console.log(`Could not convert string "${s}" to RGBA`);
+    }
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
+}
+
 function setTabComplete(inputId, suggestionTextId, items, sep) {
     console.log("setTabComplete");
     console.log(`inputId: ${inputId}`);

@@ -37,6 +37,15 @@ function formatPlayerRange(min, max) {
     return min.toString() + "-" + max;
 }
 
+function BggButton(props) {
+    var bggId = props.game.boardGameGeekId;
+    if (bggId === undefined || bggId == null)
+    {
+        return;
+    }
+    return <a className="btn bgdb-btn btn-primary bgdb-card-body-btn" href={`https://boardgamegeek.com/boardgame/${bggId}`}>BGG</a>
+}
+
 function Game(props) {
     var g = props.game;
     var onClick = (evt) => props.onGameSelected(g.id);
@@ -48,6 +57,7 @@ function Game(props) {
                 <div className="card-body bgdb-card-body">
                     <h3 className="card-title">{g.title}</h3>
                     <small>{g.primaryMechanic.name}</small>
+                    <BggButton game={g}></BggButton>
                 </div>
             </div>
             <div className="col-auto bgdb-summary">

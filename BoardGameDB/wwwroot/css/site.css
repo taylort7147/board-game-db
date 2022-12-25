@@ -253,3 +253,8 @@ header,
     padding: 10px;
   }
 }
+
+.bgdb-card-body-btn {
+  display: block;
+  margin-top: 10px;
+}

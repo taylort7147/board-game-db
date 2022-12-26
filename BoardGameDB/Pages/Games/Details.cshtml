@@ -10,7 +10,21 @@
     <h4>Game</h4>
     <hr />
     <div class="bgdb-game-header">
-        <img class="bgdb-game-header-image" src="@Model.Game.PictureUrl"/>
+        <img class="bgdb-game-header-image" src="@Model.Game.PictureUrl" />
+        <div class="bgdb-btn-group">
+            @if (!string.IsNullOrEmpty(Model.Game.BoardGameGeekId))
+            {
+                <a class="btn bgdb-btn bgdb-btn-wide" href="https://boardgamegeek.com/boardgame/@Model.Game.BoardGameGeekId">BGG</a>
+            }
+            @if (!string.IsNullOrEmpty(Model.Game.RulesUrl))
+            {
+                <a class="btn bgdb-btn bgdb-btn-wide" href="@Model.Game.RulesUrl">Rules</a>
+            }
+            @if (!string.IsNullOrEmpty(Model.Game.RulesVideoUrl))
+            {
+                <a class="btn bgdb-btn bgdb-btn-wide" href="@Model.Game.RulesVideoUrl">Rules Video</a>
+            }
+        </div>
     </div>
     <dl class="row">
         <dt class="col-sm-2">

@@ -67,6 +67,21 @@ body {
   color: var(--bgdb-theme-accent-text-color);
 }
 
+.bgdb-btn-wide,
+.btn.bgdb-btn-wide {
+  width: 100%;
+}
+
+.bgdb-btn-group {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.bgdb-btn-group .bgdb-btn {
+  margin-bottom: 5px;
+}
+
+
 .btn-check:checked+label>.bgdb-toggle-off,
 .btn-check:not(:checked)+label>.bgdb-toggle-on {
   display: none;
@@ -257,4 +272,9 @@ header,
 .bgdb-card-body-btn {
   display: block;
   margin-top: 10px;
+}
+
+.bgdb-card-body-btn-group {
+  position: relative;
+  bottom: 0;
 }

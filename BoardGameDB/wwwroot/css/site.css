@@ -61,11 +61,21 @@ body {
 }
 
 .btn.btn-primary,
-.btn.bgdb-btn {
+.btn.bgdb-btn,
+.btn.bgdb-btn.bgdb-btn-primary {
   border-color: transparent;
   background-color: var(--bgdb-theme-accent-background-color);
   color: var(--bgdb-theme-accent-text-color);
 }
+
+.btn.btn-primary,
+.btn.bgdb-btn.bgdb-btn-secondary {
+  border-color: var(--bgdb-theme-accent-background-color);
+  background-color: var(--bgdb-theme-accent-text-color);
+  color: var(--bgdb-theme-accent-background-color);
+}
+
+
 
 .bgdb-btn-wide,
 .btn.bgdb-btn-wide {

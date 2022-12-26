@@ -14,15 +14,15 @@
         <div class="bgdb-btn-group">
             @if (!string.IsNullOrEmpty(Model.Game.BoardGameGeekId))
             {
-                <a class="btn bgdb-btn bgdb-btn-wide" href="https://boardgamegeek.com/boardgame/@Model.Game.BoardGameGeekId">BGG</a>
+                <a class="btn bgdb-btn bgdb-btn-wide bgdb-btn-secondary" href="https://boardgamegeek.com/boardgame/@Model.Game.BoardGameGeekId">BGG</a>
             }
             @if (!string.IsNullOrEmpty(Model.Game.RulesUrl))
             {
-                <a class="btn bgdb-btn bgdb-btn-wide" href="@Model.Game.RulesUrl">Rules</a>
+                <a class="btn bgdb-btn bgdb-btn-wide bgdb-btn-secondary" href="@Model.Game.RulesUrl">Rules</a>
             }
             @if (!string.IsNullOrEmpty(Model.Game.RulesVideoUrl))
             {
-                <a class="btn bgdb-btn bgdb-btn-wide" href="@Model.Game.RulesVideoUrl">Rules Video</a>
+                <a class="btn bgdb-btn bgdb-btn-wide bgdb-btn-secondary" href="@Model.Game.RulesVideoUrl">Rules Video</a>
             }
         </div>
     </div>
